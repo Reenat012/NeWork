@@ -2,4 +2,43 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="my_app_primary">#FF0000</color>  // Пример красного цвета
+    <color name="my_app_primary_dark">#880000</color>  // Пример темно-красного цвета
+    <color name="my_app_secondary">#00FF00</color>  // Пример зеленого цвета
+    <color name="my_app_background">#FFFFFF</color>  // Пример белого цвета
+    <color name="my_app_error">#FF0000</color>  // Пример красного цвета для ошибок
+
+    <color name="my_app_primary_variant">#FF4081</color> // Вариант основного цвета
+    <color name="my_app_secondary_variant">#00FF8F</color> // Вариант вторичного цвета
+    <color name="my_app_surface">#FFFFFF</color> // Пример белого цвета для поверхностей
+    <color name="my_app_on_primary">#FFFFFF</color> // Пример белого цвета для основного цвета
+    <color name="my_app_on_secondary">#000000</color> // Пример черного цвета для вторичного цвета
+    <color name="my_app_on_background">#000000</color> // Пример черного цвета для фона
+    <color name="my_app_on_error">#FFFFFF</color> // Пример белого цвета для ошибок
+    <color name="my_app_on_surface">#000000</color> // Пример черного цвета для поверхности
+    <color name="mtrl_scrim">#80000000</color> // Пример полупрозрачного фона
+
+    <color name="my_app_primary_inverse">#00FFFF</color> // Пример светло-голубого цвета
+    <color name="my_app_primary_container">#FF0000</color> // Пример красного цвета для контейнера
+    <color name="my_app_on_primary_container">#FFFFFF</color> // Пример белого цвета для контейнера
+
+    <color name="my_app_tertiary">#00FF8F</color> // Пример светло-зеленого цвета
+    <color name="my_app_on_tertiary">#000000</color> // Пример черного цвета
+    <color name="my_app_tertiary_container">#00FF8F</color> // Пример светло-зеленого цвета для контейнера
+    <color name="my_app_on_tertiary_container">#000000</color> // Пример черного цвета для третичного контейнера
+    <color name="my_app_secondary_container">#00FF00</color> // Пример зеленого цвета для контейнера
+    <color name="my_app_on_secondary_container">#000000</color> // Пример черного цвета для контейнера
+
+
+
+    <color name="my_app_surface_variant">#F5F5F5</color> // Пример светло-серого цвета для поверхности
+    <color name="my_app_on_surface_variant">#000000</color> // Пример черного цвета для поверхности
+
+    <color name="my_app_inverse_surface">#FFFFFF</color> // Пример белого цвета для обратной поверхности
+    <color name="my_app_inverse_on_surface">#000000</color> // Пример черного цвета для обратной поверхности
+
+    <color name="my_app_outline">#000000</color> // Пример черного цвета для обводки
+
+    <color name="my_app_error_container">#FF0000</color> // Пример красного цвета для контейнера ошибок
+    <color name="my_app_on_error_container">#FFFFFF</color> // Пример белого цвета для контейнера ошибок
 </resources>
