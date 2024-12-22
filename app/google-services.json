@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "476102000775",
+    "project_id": "nework-a20ac",
+    "storage_bucket": "nework-a20ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476102000775:android:7df1809e483213360b7822",
+        "android_client_info": {
+          "package_name": "com.example.nework2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyh2MkSlo4YsxLFw0HAqWmx4v0TSZGG7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

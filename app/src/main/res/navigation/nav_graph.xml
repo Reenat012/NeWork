@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/proposalFragment">
+    <dialog
+        android:id="@+id/proposalFragment"
+        android:name="com.example.nework2.activity.ProposalFragment"
+        android:label="fragment_proposal"
+        tools:layout="@layout/fragment_proposal" >
+        <action
+            android:id="@+id/action_proposalFragment_to_authFragment2"
+            app:destination="@id/authFragment2" />
+    </dialog>
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.example.nework2.activity.FeedFragment"
+        android:label="FeedFragment" >
+        <action
+            android:id="@+id/action_feedFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_postCardFragment"
+            app:destination="@id/postCardFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_viewPhotoFragment"
+            app:destination="@id/viewPhotoFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_proposalFragment"
+            app:destination="@id/proposalFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_authFragment2"
+            app:destination="@id/authFragment2" />
+        <action
+            android:id="@+id/action_feedFragment_to_regFragment2"
+            app:destination="@id/regFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="com.example.nework2.activity.NewPostFragment"
+        android:label="NewPostFragment" >
+        <action
+            android:id="@+id/action_newPostFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postCardFragment"
+        android:name="com.example.nework2.activity.PostCardFragment"
+        android:label="fragment_post_card"
+        tools:layout="@layout/fragment_post_card" >
+        <action
+            android:id="@+id/action_postCardFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPhotoFragment"
+        android:name="com.example.nework2.activity.ViewPhotoFragment"
+        android:label="fragment_view_photo"
+        tools:layout="@layout/fragment_view_photo" />
+    <fragment
+        android:id="@+id/authFragment2"
+        android:name="com.example.nework2.activity.AuthFragment2"
+        android:label="AuthFragment2" />
+    <fragment
+        android:id="@+id/regFragment2"
+        android:name="com.example.nework2.activity.RegFragment2"
+        android:label="RegFragment2" >
+        <action
+            android:id="@+id/action_regFragment2_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
+</navigation>

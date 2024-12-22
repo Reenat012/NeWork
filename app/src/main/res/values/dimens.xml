@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_spacing">10dp</dimen>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="margin_photo_iv">20dp</dimen>
+    <dimen name="icons_size">32dp</dimen>
+    <dimen name="avatar_dimension">60dp</dimen>
+    <dimen name="margin_start">10dp</dimen>
+    <dimen name="icons_width">80dp</dimen>
+    <dimen name="icons_height">32dp</dimen>
+    <dimen name="size_likes">32dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="_25dp">25dp</dimen>
+    <dimen name="size_avatar_in_prev">100dp</dimen>
+    <dimen name="padding_save">12dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="size_video_view">180dp</dimen>
+</resources>

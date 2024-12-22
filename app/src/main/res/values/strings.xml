@@ -1,3 +1,85 @@
 <resources>
-    <string name="app_name">NeWork2</string>
+    <string name="app_name" translatable="false">NeWork2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="users" translatable="false">Users</string>
+    <string name="posts" translatable="false">Posts</string>
+    <string name="events" translatable="false">Events</string>
+    <string name="sign_in" translatable="false">Sign in\n</string>
+    <string name="sign_up" translatable="false">Sign up</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="empty_posts" translatable="false">There is not posts</string>
+    <string name="network_error" translatable="false">Network error</string>
+    <string name="new_posts" translatable="false">New posts</string>
+    <string name="description_share" translatable="false">Share\n</string>
+    <string name="views" translatable="false">123</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label" translatable="false">First Fragment</string>
+    <string name="second_fragment_label" translatable="false">Second Fragment</string>
+    <string name="next" translatable="false">Next</string>
+    <string name="previous" translatable="false">Previous</string>
+
+    <string name="lorem_ipsum" translatable="false">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
+        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
+        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
+        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
+        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
+        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
+        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
+        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
+        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
+        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
+        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
+        bibendum, vel congue leo egestas.\n\n
+        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
+        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
+        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
+        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
+        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
+        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
+        est.\n\n
+        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
+        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
+        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
+        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
+        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
+        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
+        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
+        convallis.\n\n
+        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
+        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
+        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
+        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
+        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
+        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+    </string>
+    <string name="save_menu" translatable="false">Save</string>
+    <string name="menu_edit" translatable="false">Edit\n</string>
+    <string name="menu_remove" translatable="false">Remove</string>
+    <string name="downland_avatar" translatable="false">Downland avatar\n</string>
+    <string name="reg_name" translatable="false">Name</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="retry_password" translatable="false">Retry password</string>
+    <string name="reg_sign_up" translatable="false">Sign up</string>
+    <string name="login" translatable="false">Login\n</string>
+    <string name="sign_in_button" translatable="false">Sign in</string>
+    <string name="save" translatable="false">Save</string>
+    <string name="clear" translatable="false">Clear</string>
+    <string name="image" translatable="false">Image</string>
+    <string name="choser_share_post" translatable="false">Share\n</string>
+    <string name="retry_loading" translatable="false">Retry</string>
+    <string name="empty" translatable="false">Empty\n</string>
+    <string name="google_play_unavailable" translatable="false">Google Api Недоступно</string>
+    <string name="image_pick_error" translatable="false">Image pick error</string>
+    <string name="password_different" translatable="false">Password different\n</string>
+    <string name="field_empty_password_different" translatable="false">Password empty</string>
+    <string name="channel_remote_name" translatable="false">Server notifications</string>
+    <string name="channel_remote_description" translatable="false">Notifications from remote server</string>
+    <string name="notification_user_save_post" translatable="false">User %1$s add new post:</string>
+    <string name="notification_user_content_post" translatable="false">Текст поста: \"%1$s\"</string>
+    <string name="content" translatable="false">Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb</string>
+    <string name="notification_user_liked" translatable="false">User %1$s liked %2$s\\\'s post</string>
+    <string name="notification_test" translatable="false">Test %1$s</string>
 </resources>
