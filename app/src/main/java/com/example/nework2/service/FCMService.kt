@@ -12,7 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.nework2.R
-import com.example.nework2.activity.HomeScreenActivity
+import com.example.nework2.activity.ActivityMain
 import com.example.nework2.auth.AppAuth
 import com.example.nework2.dto.Post
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -62,7 +62,7 @@ class FCMService : FirebaseMessagingService() {
 
 
         //интент на переход в активити по клику на уведомление
-        val intent = Intent(this, HomeScreenActivity::class.java)
+        val intent = Intent(this, ActivityMain::class.java)
 
         val pendingIntent = PendingIntent.getActivity(
             this,
@@ -103,7 +103,7 @@ class FCMService : FirebaseMessagingService() {
     private fun handleLike(like: Like) {
 
         //интент на переход в активити по клику на уведомление
-        val intent = Intent(this, HomeScreenActivity::class.java)
+        val intent = Intent(this, ActivityMain::class.java)
 
         val pendingIntent = PendingIntent.getActivity(
             this,
@@ -136,10 +136,10 @@ class FCMService : FirebaseMessagingService() {
     }
 
     private fun handleSavePost(post: Post) {
-        if (post.id == appAuth.data.value?.id) {
+        if (post.id == appAuth.authState.value.id) {
             //все ок, показываем уведомление
             //интент на переход в активити по клику на уведомление
-            val intent = Intent(this, HomeScreenActivity::class.java)
+            val intent = Intent(this, ActivityMain::class.java)
 
             val pendingIntent = PendingIntent.getActivity(
                 this,
@@ -176,7 +176,7 @@ class FCMService : FirebaseMessagingService() {
         } else if (post.id == null) {
             //все ок, показываем уведомление
             //интент на переход в активити по клику на уведомление
-            val intent = Intent(this, HomeScreenActivity::class.java)
+            val intent = Intent(this, ActivityMain::class.java)
 
             val pendingIntent = PendingIntent.getActivity(
                 this,

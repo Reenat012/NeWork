@@ -3,16 +3,16 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/users"
+        android:icon="@drawable/icon_user_by_anna"
         android:title="@string/users"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@drawable/posts"
+        android:icon="@drawable/icon_posts_by_anna"
         android:title="@string/posts"/>
     <item
         android:id="@+id/page_3"
         android:enabled="true"
-        android:icon="@drawable/events"
+        android:icon="@drawable/icon_events_by_anna"
         android:title="@string/events"/>
 </menu>

@@ -4,92 +4,91 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.nework2.R
 import com.example.nework2.databinding.FragmentAuth2Binding
-import com.example.nework2.util.StringArg
-import com.example.nework2.util.TextCallback
 import com.example.nework2.viewmodel.AuthViewModel
-import com.example.nework2.viewmodel.LoginViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class AuthFragment2 : Fragment(), TextCallback {
+class AuthFragment2 : Fragment() {
+    private val authViewModel: AuthViewModel by activityViewModels()
 
-    //передаем текст в репозиторий для обработки
-    companion object {
-        var Bundle.textArg: String? by StringArg
-
-    }
-
-    private val loginViewModel: LoginViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
+    private var login = ""
+    private var password = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentAuth2Binding.inflate(
-            inflater,
-            container,
-            false
-        )
+        val binding = FragmentAuth2Binding.inflate(inflater, container, false)
 
-        binding.signInButton.setOnClickListener {
-            //пробрасываем логин и пароль во authViewModel
-            onLoginReceived(binding.login.text.toString())
-            onPasswordReceived(binding.password.text.toString())
-
-            loginViewModel.onLoginTap()
+        binding.textLogin.addTextChangedListener {
+            login = it.toString()
+            binding.apply {
+                login.error = null
+                signInButton.isChecked = updateStateButtonLogin()
+            }
         }
 
-        authViewModel.authData.observe(viewLifecycleOwner) { // <---
-            if (it!= null) {
-                binding.progressBar.visibility = View.GONE
-                //переходим обратно в feedFragment
+        binding.textPassword.addTextChangedListener {
+            password = it.toString()
+            binding.apply {
+                password.error = null
+                signInButton.isChecked = updateStateButtonLogin()
+            }
+        }
+
+        binding.signInButton.setOnClickListener {
+            login.trim()
+            password.trim()
+            when {
+                password.isEmpty() && login.isEmpty() -> {
+                    binding.apply {
+                        login.error = getString(R.string.empty_login)
+                        password.error = getString(R.string.empty_password)
+                    }
+                }
+
+                password.isEmpty() -> {
+                    binding.password.error = getString(R.string.empty_password)
+                }
+
+                login.isEmpty() -> {
+                    binding.login.error = getString(R.string.empty_login)
+                }
+
+                else -> {
+                    authViewModel.login(login, password)
+                }
+            }
+        }
+
+        binding.ifNoReg.setOnClickListener {
+            findNavController().navigate(R.id.action_authFragment2_to_regFragment2)
+        }
+
+        authViewModel.dataAuth.observe(viewLifecycleOwner) { state ->
+            val token = state.token.toString()
+
+            if (state.id != 0L && token.isNotEmpty()) {
                 findNavController().navigateUp()
             }
         }
 
-        loginViewModel.progressRegister.observe(viewLifecycleOwner) {
-            binding.progressBar.isVisible = it != null
-
-        }
-
-        loginViewModel.errorEvent.observe(viewLifecycleOwner) {
-            if (it != null) {
-                Snackbar.make(binding.root, R.string.network_error, Snackbar.LENGTH_SHORT)
-                    .show()
-            }
+        binding.topAppBar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
 
         return binding.root
     }
 
-    override fun onLoginReceived(text: String) {
-        loginViewModel.saveLogin(text)
-    }
-
-    override fun onPasswordReceived(text: String) {
-        loginViewModel.savePassword(text)
-    }
-
-    override fun onRetryPasswordReceived(text: String) {
-    }
-
-    override fun onNameReceived(text: String) {
+    private fun updateStateButtonLogin(): Boolean {
+        return login.isNotEmpty() && password.isNotEmpty()
     }
 
 

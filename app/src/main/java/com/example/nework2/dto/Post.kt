@@ -1,6 +1,7 @@
 package com.example.nework2.dto
 
 import com.example.nework2.enumeration.AttachmentType
+import java.time.OffsetDateTime
 
 
 sealed interface FeedItem {
@@ -9,20 +10,21 @@ sealed interface FeedItem {
 
 data class Post(
     override val id: Long,
-    val author: String,
     val authorId: Long,
-    val authorAvatar: String = "http://10.0.2.2:9999/avatars/netology.jpg",
+    val author: String,
+    val authorJob: String? = null,
+    val authorAvatar: String? = null,
     val content: String,
-    val published: String,
-    val likedByMe: Boolean = false,
-    val likes: Int = 0,
-    val reposts: Int = 0,
-    val views: Int = 0,
-    val countReposts: Int = 0,
-    val video: String? = null, //необязательное поле, если пользователь добавит ссылку на видео
-    var attachment: Attachment? = null,
-    val photoPost: String? = null,
-    val ownedByMe: Boolean = false
+    val published: OffsetDateTime,
+    val coords: Coordinates? = null,
+    val link: String? = null,
+    val mentionIds: List<Long>,
+    val mentionedMe: Boolean,
+    val likeOwnerIds: List<Long>,
+    val likedByMe: Boolean,
+    val attachment: Attachment? = null,
+    val users: Map<String, UserPreview>,
+    val ownedByMe: Boolean = false,
 ) : FeedItem
 
 data class Ad(

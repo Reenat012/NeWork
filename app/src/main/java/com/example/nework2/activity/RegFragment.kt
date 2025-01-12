@@ -1,167 +1,168 @@
 package com.example.nework2.activity
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.nework2.R
 import com.example.nework2.databinding.FragmentReg2Binding
-
-import com.example.nework2.util.TextCallback
 import com.example.nework2.viewmodel.AuthViewModel
-import com.example.nework2.viewmodel.RegistrationViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
-
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class RegFragment : Fragment(), TextCallback {
+class RegisterFragment : Fragment() {
+    private val authViewModel: AuthViewModel by activityViewModels()
 
-    companion object {
-        fun newInstance() = RegFragment()
-    }
+    private var login = ""
+    private var name = ""
+    private var password = ""
+    private var confirmPassword = ""
 
-    private val viewModel: RegistrationViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels()
+    private val startForPhotoResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    val fileUri = data?.data!!
+                    val file = fileUri.toFile()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+                    authViewModel.setPhoto(fileUri, file)
+                }
 
-        // TODO: Use the ViewModel
-    }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                else -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.unknown_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentReg2Binding.inflate(
-            inflater,
-            container,
-            false
-        )
-
-        //нажатие кнопки sign up
-        binding.signInButton.setOnClickListener {
-            //пробрасываем логин, пароль во registrationViewModel
-            onNameReceived(binding.etRegName.text.toString())
-            onLoginReceived(binding.etRegLogin.text.toString())
-            onPasswordReceived(binding.etRegPassword.text.toString())
-            onRetryPasswordReceived(binding.etRegRetryPassword.text.toString())
-
-            //проверяем заполнены ли все поля регистрации
-            if (viewModel.checkFieldRegister() && viewModel.checkPassword()) {
-                viewModel.onSignUpTap()
-            } else if (!viewModel.checkFieldRegister() && viewModel.checkPassword()) {
-                Toast.makeText(requireContext(), R.string.empty, Toast.LENGTH_SHORT)
-                    .show()
-            } else if (viewModel.checkFieldRegister() && !viewModel.checkPassword()) {
-                Toast.makeText(requireContext(), R.string.password_different, Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.field_empty_password_different,
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-
-        //подписываем на хранилище токинов, как только там появится новый токен переходим в feedfragment
-        authViewModel.authData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                binding.progressBar.visibility = View.GONE
-                findNavController().navigate(
-                    R.id.action_regFragment2_to_feedFragment
-                )
-            }
-        }
-
-        viewModel.progressRegister.observe(viewLifecycleOwner) {
-            if (it != null) {
-                binding.progressBar.visibility = View.VISIBLE
-            }
-        }
-
-        viewModel.errorEvent.observe(viewLifecycleOwner) {
-            if (it != null) {
-                Snackbar.make(binding.root, R.string.network_error, Snackbar.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        //создаем лаунчер для интента фото
-        val launcher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            //если ошибка
-            if (it.resultCode == ImagePicker.RESULT_ERROR) {
-                //показываем всплывающеее окно
-                Toast.makeText(requireContext(), R.string.image_pick_error, Toast.LENGTH_SHORT)
-                    .show()
-                //возврата управления из лямбда-выражения, аннотированного ключевым словом suspend, обратно в точку вызова
-                //это позволяет избежать вложенных обратных вызовов и делает код более читаемым и поддерживаемым
-                return@registerForActivityResult
-            }
-
-            val uri = it.data?.data ?: return@registerForActivityResult
-
-            viewModel.setPhoto(uri, uri.toFile())
-        }
-
-        //оформляем подписку на photo
-        viewModel.photo.observe(viewLifecycleOwner)
-        { model ->
-            //если модель есть
-            if (model != null) {
-                //то заполняем preview тем, что там указано
-                binding.ivPrevAvatar.setImageURI(model.uri)
-                //показывем preview
-                binding.ivPrevAvatar.visibility = View.VISIBLE
-            } else {
-                //скрываем видимость всего контейнера preview
-                binding.ivPrevAvatar.visibility = View.GONE
-            }
-        }
+        val binding = FragmentReg2Binding.inflate(inflater, container, false)
 
 
-        //обработчик нажатия на кнопку взять фото из галереи
         binding.buttonDowAvatar.setOnClickListener {
             ImagePicker.Builder(this)
-                .crop() //обрезка изображения после его выбора из галерии или камеры
-                .galleryOnly()
-                .maxResultSize(NewPostFragment.IMAGE_MAX_SIZE, NewPostFragment.IMAGE_MAX_SIZE)
+                .crop(1f, 1f)
+                .maxResultSize(2048, 2048)
                 .createIntent {
-                    launcher.launch(it)
+                    startForPhotoResult.launch(it)
                 }
         }
 
+        authViewModel.dataAuth.observe(viewLifecycleOwner) { state ->
+            val token = state.token.toString()
+
+            if (state.id != 0L && token.isNotEmpty()) {
+                findNavController().navigateUp()
+            }
+        }
+
+        authViewModel.photoData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.ivPrevAvatar.setImageURI(it.uri)
+            }
+        }
+
+        binding.etRegLogin.addTextChangedListener {
+            login = it.toString()
+            binding.apply {
+                tvRegLogin.error = null
+                signInButton.isChecked = updateButtonState()
+            }
+        }
+        binding.etRegName.addTextChangedListener {
+            name = it.toString()
+            binding.apply {
+                binding.tvRegName.error = null
+                binding.signInButton.isChecked = updateButtonState()
+            }
+        }
+        binding.etRegPassword.addTextChangedListener {
+            password = it.toString()
+            binding.etRegPassword.error = null
+            binding.apply {
+                tvRegPassword.error = null
+                signInButton.isChecked = updateButtonState()
+            }
+        }
+        binding.etRegRetryPassword.addTextChangedListener {
+            confirmPassword = it.toString()
+            binding.apply {
+                tvRegPassword.error = null
+                tvRegRetryPassword.error = null
+                signInButton.isChecked = updateButtonState()
+            }
+        }
+
+
+        binding.signInButton.setOnClickListener {
+            login.trim()
+            name.trim()
+            password.trim()
+            confirmPassword.trim()
+            val loginEmpty = login.isEmpty()
+            val nameEmpty = name.isEmpty()
+            val passwordsMatch = password == confirmPassword
+            val passwordEmpty = password.isEmpty()
+            val confirmPasswordEmpty = confirmPassword.isEmpty()
+
+            binding.apply {
+                tvRegLogin.error = if (loginEmpty) getString(R.string.empty_login) else null
+                tvRegName.error = if (nameEmpty) getString(R.string.name_is_empty) else null
+
+                tvRegPassword.error = if (!passwordsMatch || passwordEmpty) {
+                    if (passwordEmpty) getString(R.string.passwords_is_empty) else getString(R.string.passwords_dont_match)
+                } else null
+
+                tvRegRetryPassword.error = if (!passwordsMatch || confirmPasswordEmpty) {
+                    if (confirmPasswordEmpty) getString(R.string.passwords_is_empty) else getString(
+                        R.string.passwords_dont_match
+                    )
+                } else null
+            }
+
+
+            if (loginEmpty || nameEmpty || !passwordsMatch || passwordEmpty || confirmPasswordEmpty) {
+                return@setOnClickListener
+            }
+
+            authViewModel.register(login, name, password)
+        }
+
+
+
+        binding.topAppBar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         return binding.root
     }
 
-    override fun onLoginReceived(text: String) {
-        viewModel.saveLogin(text)
+    private fun updateButtonState(): Boolean {
+        return login.isNotEmpty() && name.isNotEmpty()
+                && password.isNotEmpty() && confirmPassword.isNotEmpty()
     }
 
-    override fun onPasswordReceived(text: String) {
-        viewModel.savePassword(text)
-    }
-
-    override fun onRetryPasswordReceived(text: String) {
-        viewModel.saveRetryPassword(text)
-    }
-
-    override fun onNameReceived(text: String) {
-        viewModel.saveName(text)
-    }
 }

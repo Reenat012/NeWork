@@ -2,16 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="my_app_primary">#6200EE</color>  // Пример красного цвета
+    <color name="my_app_primary">#2F4F4F</color>  // Основной цвет для кнопок
     <color name="my_app_primary_dark">#3700B3</color>  // Пример темно-красного цвета
     <color name="my_app_secondary">#03DAC6</color>  // Пример зеленого цвета
-    <color name="my_app_background">#FFFFFF</color>  // Пример белого цвета
+    <color name="my_app_background">#FFFFFF</color>  // задний фон
     <color name="my_app_error">#FF0000</color>  // Пример красного цвета для ошибок
 
-    <color name="my_app_primary_variant">#6200EE</color> // Вариант основного цвета
+    <color name="my_app_primary_variant">#2F4F4F</color> // Вариант основного цвета
     <color name="my_app_secondary_variant">#00FF8F</color> // Вариант вторичного цвета
     <color name="my_app_surface">#FFFFFF</color> // Пример белого цвета для поверхностей
-    <color name="my_app_on_primary">#FFFFFF</color> // Пример белого цвета для основного цвета
+    <color name="my_app_on_primary">#FFFFFF</color> // Цвет надписей на кнопках
     <color name="my_app_on_secondary">#000000</color> // Пример черного цвета для вторичного цвета
     <color name="my_app_on_background">#000000</color> // Пример черного цвета для фона
     <color name="my_app_on_error">#FFFFFF</color> // Пример белого цвета для ошибок

@@ -1,6 +1,13 @@
 package com.example.nework2.api
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.example.nework2.BuildConfig
 import com.example.nework2.auth.AppAuth
+import com.google.gson.GsonBuilder
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,8 +17,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-
-import java.util.concurrent.TimeUnit
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -19,7 +27,7 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        private const val BASE_URL = "http://94.228.125.136:8080/api/slow/"
+        private const val BASE_URL = "http://94.228.125.136:8080/"
     }
 
     @Provides
@@ -37,7 +45,7 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideLogging(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        if ("true".toBoolean()) {
+        if (BuildConfig.DEBUG) {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
@@ -47,25 +55,42 @@ class ApiModule {
         logging: HttpLoggingInterceptor,
         appAuth: AppAuth
     ): OkHttpClient = OkHttpClient.Builder()
-        .callTimeout(10, TimeUnit.SECONDS) //30 сек будем ждать вызова клиента
-        .addInterceptor(logging)
         .addInterceptor { chain ->
-            chain.proceed(
-                //либо у нас есть токен и создается билдер с новым заголовком
-                appAuth.data.value?.token?.let {
-                    chain.request().newBuilder()
-                        .addHeader("Authorization", it)
-                        .build()
-                }
-                //либо заголовок остается неизменным
-                    ?: chain.request()
-            )
+            appAuth.authState.value.token?.let { token->
+                val request = chain.request().newBuilder()
+                    .addHeader("Authorization", token)
+                    .addHeader("Api-Key", BuildConfig.API_KEY)
+                    .build()
+                return@addInterceptor chain.proceed(request)
+            }
+            val request = chain.request().newBuilder()
+                .addHeader("Api-Key", BuildConfig.API_KEY)
+                .build()
+            chain.proceed(request)
         }
         .build()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder().registerTypeAdapter(
+                    OffsetDateTime::class.java,
+                    object : TypeAdapter<OffsetDateTime>() {
+                        override fun write(out: JsonWriter?, value: OffsetDateTime?) {
+                            out?.value(value?.toEpochSecond())
+                        }
+
+                        override fun read(jsonReader: JsonReader): OffsetDateTime {
+                            return OffsetDateTime.ofInstant(
+                                Instant.parse(jsonReader.nextString()),
+                                ZoneId.systemDefault()
+                            )
+                        }
+                    }).create()
+            )
+        )
         .client(okHttpClient)
         .baseUrl(BASE_URL)
         .build()

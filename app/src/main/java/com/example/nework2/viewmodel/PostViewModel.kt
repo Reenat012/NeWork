@@ -1,6 +1,8 @@
 package com.example.nework2.viewmodel
 
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,253 +10,200 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.nework2.auth.AppAuth
+import com.example.nework2.dto.Coordinates
 import com.example.nework2.dto.FeedItem
 import com.example.nework2.dto.Post
-import com.example.nework2.model.FeedModel
-import com.example.nework2.model.FeedModelState
-import com.example.nework2.model.ModelPhoto
+import com.example.nework2.enumeration.AttachmentType
+import com.example.nework2.model.AttachmentModel
+import com.example.nework2.model.InvolvedItemModel
+import com.example.nework2.model.InvolvedItemType
 import com.example.nework2.repository.PostRepository
-import com.example.nework2.util.SingleLiveEvent
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.OffsetDateTime
 import javax.inject.Inject
 
-private val empty = Post(
+@RequiresApi(Build.VERSION_CODES.O)
+val emptyPost = Post(
     id = 0,
-    content = "",
+    authorId = 0,
     author = "",
-    authorAvatar = "http://10.0.2.2:9999/avatars/netology.jpg",
+    authorJob = null,
+    authorAvatar = null,
+    content = "",
+    published = OffsetDateTime.now(),
+    coords = null,
+    link = null,
+    mentionIds = emptyList(),
+    mentionedMe = false,
+    likeOwnerIds = emptyList(),
     likedByMe = false,
-    published = "",
-    authorId = 0
+    attachment = null,
+    users = mapOf(),
+    ownedByMe = false,
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    private val repository: PostRepository,
-    private val appAuth: AppAuth
-) :
-    ViewModel() {
+    private val postRepository: PostRepository,
+    appAuth: AppAuth
+) : ViewModel() {
 
-    private val _state = MutableLiveData<FeedModelState>() //изменяемое состояние экрана
-    val state: LiveData<FeedModelState>
-        get() = _state
-
-    //переменная для подсчета скрытых новых постов
-    var countHidden = 0
-
-    //добавляем навигацию во viewModel
-    private val _navigateFeedFragmentToProposalFragment = SingleLiveEvent<Unit>()
-    val navigateFeedFragmentToProposalFragment: SingleLiveEvent<Unit> =
-        _navigateFeedFragmentToProposalFragment
-
-
-    //паттерн наблюдателя
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val data: Flow<PagingData<FeedItem>> =
-        //впервую очередь смотрим на данные авторизации
-        appAuth.data.flatMapLatest { token ->
-            val myId = token?.id
-
-            //читаем базу данных
-            repository.data.map { posts ->
-                posts.map { post ->
-                    if (post is Post) {
-                        post.copy(ownedByMe = post.authorId == myId)
-                    } else post
-                }
-            }.flowOn(Dispatchers.Default)
-        }
-
-    private val _data = MutableLiveData<FeedModel>()
-
-    private val _postCreated = SingleLiveEvent<Unit>()
-    val postCreated: LiveData<Unit>
-        get() = _postCreated
-
-    //подписка на количество новых постов
-//    val newerCount: Flow<Int> = data.map { post ->
-//        post.map { it.id
-//    } }.flatMapLatest { repository.getNewer(it) }
-
-    //сохраняем фото в переменную
-    private val _photo = MutableLiveData<ModelPhoto?>(null)
-    val photo: LiveData<ModelPhoto?>
-        get() = _photo
-
-    fun setPhoto(uri: Uri, file: File) {
-        _photo.value = ModelPhoto(uri, file)
-    }
-
-    fun clearPhoto() {
-        _photo.value = null
-    }
-
-    fun load() {
-        viewModelScope.launch {
-            //создаем фоновый поток
-            //postValue безопасный метод в фоновом потоке вместо value, безопасно пробрасывает результат на основной поток MainThread
-            _state.postValue(FeedModelState())
-
-            _state.value = try {
-                //получаем только посты сохраненные в локальной БД
-                repository.getAllVisible()
-                //если все хорошо, все флаги выключены
-                FeedModelState()
-            } catch (e: Exception) {
-                //если ошибка, выбрасываем предупреждение
-                FeedModelState(error = true)
-            }
-        }
-    }
-
-    fun getHiddenCount() {
-        viewModelScope.launch {
-            //обновляем переменную count числом новых постов
-            countHidden = repository.getHiddenCount().firstOrNull() ?: 0
-        }
-    }
-
-    suspend fun changeHiddenPosts() {
-        repository.changeHiddenPosts()
-    }
-
-    fun refreshPosts() {
-        //создаем корутину
-        viewModelScope.launch {
-            //создаем фоновый поток
-            //вызываем значок загрузки
-            //postValue безопасный метод в фоновом потоке вместо value, безопасно пробрасывает результат на основной поток MainThread
-            _state.postValue(FeedModelState(refreshing = true))
-
-            _state.value = try {
-                repository.getAll()
-                //если все хорошо, все флаги выключены
-                FeedModelState()
-            } catch (e: Exception) {
-                //если ошибка, выбрасываем предупреждение
-                FeedModelState(error = true)
-            }
-        }
-    }
-
-    init {
-        load()
-    }
-
-    //запрос списка постов
-
-    val edited = MutableLiveData(empty) //хранит состояние редактированного поста
-
-    fun changeContentAndSave(text: String) {
-        viewModelScope.launch {
-            edited.value?.let { post ->
-                try {
-                    //если текст не равен существующему
-                    //добавлено фото
-                    if (post.content != text.trim() && _photo.value != null) {
-                        _photo.value?.let {
-                            repository.saveWithAttachment(post.copy(content = text), it)
-                        }
-                    }
-                    //если текст равен существующему(т.е. его не надо менять)
-                    //добавлено фото
-                    else if (post.content == text.trim() && _photo.value != null) {
-                        _photo.value?.let {
-                            repository.saveWithAttachment(post, it)
-                        }
-                    }
-                    //если текст не равен существующему
-                    //фото не добавлено
-                    else if (post.content != text.trim() && _photo.value == null) {
-                        repository.saveAsync(post.copy(content = text))
-                    }
-
-                    //postValue обновляем с фонового потока LiveData}
-                    edited.postValue(empty)
-                } catch (e: Exception) {
-                    _state.value = FeedModelState(error = true)
-                }
-            }
-
-        }
-    }
-
-    //функция отмены редактирования и очистка поста
-    fun cancelEdit() {
-        edited.value = empty
-    }
-
-    fun cancelChangeContent() {
-        edited.value = empty //удаляем редактированный пост из поля для редактирования
-    }
-
-    fun repost(id: Long) = repository.repost(id)
-//    fun likeById(id: Long) {
-//        thread {
-//            repository.likeById(id)
-//            repository.getPost(id) //обращаемся к репозиторию и обновляем пост
-//        }
-//    }
-
-    fun likeById(id: Long) {
-        //нужно создать условие
-        //если пользователь вошел (если есть токен), можно лайкнуть
-        //если нет, предложить авторизоваться
-
-        if (appAuth.data.value != null) {
-            //получаем состояние likedByMe поста по id
-            val likedByMe = _data.value?.posts?.find { it.id == id }?.likedByMe ?: return
-
-            viewModelScope.launch {
-                //если true - dislike, false - like
-                try {
-                    if (likedByMe) {
-                        repository.disLikeByIdAsync(id)
-                        //обновлять данные вручную не требуется так как они обновляются автоматически благодаря подписке к локальной базе данных
+    val data: Flow<PagingData<FeedItem>> = appAuth.authState
+        .flatMapLatest { auth ->
+            postRepository.data.map {
+                it.map { feedItem ->
+                    if (feedItem is Post) {
+                        feedItem.copy(
+                            ownedByMe = auth.id == feedItem.authorId,
+                            likedByMe = !feedItem.likeOwnerIds.none { id ->
+                                id == auth.id
+                            }
+                        )
                     } else {
-                        repository.likeByIdAsync(id)
+                        feedItem
                     }
-                } catch (e: Exception) {
-                    _state.value = FeedModelState(error = true)
                 }
             }
-        } else {
-            //инициируем переход
-            _navigateFeedFragmentToProposalFragment.postValue(Unit)
+        }.flowOn(Dispatchers.Default)
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val _editedPost = MutableLiveData(emptyPost)
+    @RequiresApi(Build.VERSION_CODES.O)
+    val editedPost: LiveData<Post> = _editedPost
+
+    val postData = MutableLiveData<Post>()
+
+    val involvedData = MutableLiveData(InvolvedItemModel())
+
+    private val _attachmentData: MutableLiveData<AttachmentModel?> = MutableLiveData(null)
+    val attachmentData: LiveData<AttachmentModel?>
+        get() = _attachmentData
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun savePost(content: String) {
+        val text = content.trim()
+        if (_editedPost.value?.content == text) {
+            _editedPost.value = emptyPost
+            return
         }
-    }
-
-    fun removeById(id: Long) {
-        // Оптимистичная модель
-        viewModelScope.launch {
-            val old = _data.value?.posts.orEmpty()
-
-            try {
-                repository.removeByIdAsync(id)
-            } catch (e: Exception) {
-                _state.value = FeedModelState(error = true)
+        _editedPost.value = _editedPost.value?.copy(content = text)
+        _editedPost.value?.let {
+            viewModelScope.launch {
+                val attachment = _attachmentData.value
+                if (attachment == null) {
+                    postRepository.savePost(
+                        it
+                    )
+                } else {
+                    postRepository.savePostWithAttachment(
+                        it, attachment
+                    )
+                }
             }
         }
+        _editedPost.value = emptyPost
+        _attachmentData.value = null
     }
 
+    fun deletePost(post: Post) = viewModelScope.launch {
+        postRepository.deletePost(post.id)
+    }
+
+    fun like(post: Post) = viewModelScope.launch {
+        try {
+            postRepository.like(post)
+        } catch (e: Exception) {
+            println(e)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun edit(post: Post) {
-        edited.value = post //редактируемый пост записываем в LiveData edited
+        _editedPost.value = post
     }
 
-    fun playVideo(post: Post) {
-        post.video
+    fun setAttachment(uri: Uri, file: File, attachmentType: AttachmentType) {
+        _attachmentData.value = AttachmentModel(attachmentType, uri, file)
+    }
+
+    fun removePhoto() {
+        _attachmentData.value = null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setCoord(point: Point?) {
+        if (point != null) {
+            _editedPost.value = _editedPost.value?.copy(
+                coords = Coordinates(point.latitude, point.longitude)
+            )
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun removeCoords() {
+        _editedPost.value = _editedPost.value?.copy(
+            coords = null
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setMentionId(selectedUsers: List<Long>) {
+        _editedPost.value = _editedPost.value?.copy(
+            mentionIds = selectedUsers
+        )
     }
 
     fun openPost(post: Post) {
-//        repository.openPostById(post.id)
+        postData.value = post
     }
+
+
+    suspend fun getInvolved(involved: List<Long>, involvedItemType: InvolvedItemType) {
+        val list = involved
+            .let {
+                if (it.size > 4) it.take(5) else it
+            }
+            .map {
+                viewModelScope.async { postRepository.getUser(it) }
+            }.awaitAll()
+
+        synchronized(involvedData) {
+            when (involvedItemType) {
+
+                InvolvedItemType.LIKERS -> {
+                    involvedData.value = involvedData.value?.copy(
+                        likers = list
+                    )
+                }
+
+                InvolvedItemType.MENTIONED -> {
+                    involvedData.value = involvedData.value?.copy(
+                        mentioned = list
+                    )
+                }
+
+                else -> return
+            }
+        }
+
+    }
+
+    fun resetInvolved() {
+        involvedData.value = InvolvedItemModel()
+    }
+
 }

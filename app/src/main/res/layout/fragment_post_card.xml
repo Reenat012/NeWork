@@ -1,196 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding"
-    tools:context=".activity.PostCardFragment">
+    android:layout_margin="@dimen/margin_card_post"
+    android:background="@color/white"
+    android:padding="@dimen/padding">
 
-    <ImageView
-        android:id="@+id/photo_iv"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardPost"
+        style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/margin_photo_iv"
-        android:layout_marginBottom="@dimen/margin_photo_iv"
-        android:background="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/barrier_bottom"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/iv_menu"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="@dimen/icons_size"
-        android:layout_height="@dimen/icons_size"
-        android:layout_marginBottom="48dp"
-        app:icon="@drawable/free_icon_font_menu_dots_vertical_3917764"
-        app:iconTint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/tv_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="@dimen/avatar_dimension"
-        android:layout_height="@dimen/avatar_dimension"
-        android:layout_marginBottom="@dimen/margin_start"
-        app:layout_constraintBottom_toBottomOf="@id/barrier_top"
-        app:layout_constraintEnd_toStartOf="@id/tv_author"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/vektor_ng" />
+        <ImageView
+            android:id="@+id/photo_iv"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="@dimen/margin_photo_iv"
+            android:layout_marginBottom="@dimen/margin_photo_iv"
+            android:background="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/barrier_bottom"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
-    <TextView
-        android:id="@+id/tv_author"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start"
-        android:ellipsize="end"
-        android:lines="1"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@id/tv_published"
-        app:layout_constraintEnd_toStartOf="@id/iv_menu"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        tools:text="@tools:sample/lorem[200]" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/iv_menu"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/icons_size"
+            android:layout_height="@dimen/icons_size"
+            android:layout_marginBottom="48dp"
+            app:icon="@drawable/free_icon_font_menu_dots_vertical_3917764"
+            app:iconTint="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/tv_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_published"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        app:layout_constraintEnd_toStartOf="@id/iv_menu"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@id/tv_author"
-        tools:text="@tools:sample/lorem[1]" />
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/avatar_dimension"
+            android:layout_height="@dimen/avatar_dimension"
+            android:layout_marginBottom="@dimen/margin_start"
+            android:padding="@dimen/_10dp"
+            app:layout_constraintBottom_toBottomOf="@id/barrier_top"
+            app:layout_constraintEnd_toStartOf="@id/tv_author"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_user_by_anna"
+            app:tint="@color/Gray" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="iv_avatar, tv_author, tv_published, iv_menu" />
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text=""
+            app:layout_constraintBottom_toTopOf="@id/tv_published"
+            app:layout_constraintEnd_toStartOf="@id/iv_menu"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
+            tools:text="@tools:sample/lorem[200]" />
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_start"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier_top"
-        tools:text="@tools:sample/lorem[20]" />
+        <TextView
+            android:id="@+id/tv_published"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+            app:layout_constraintEnd_toStartOf="@id/iv_menu"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_author"
+            tools:text="@tools:sample/lorem[1]" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tv_content" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iv_avatar, tv_author, tv_published, iv_menu" />
 
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_start"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier_top"
+            tools:text="@tools:sample/lorem[20]" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/iv_likes"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="@dimen/icons_width"
-        android:layout_height="@dimen/icons_height"
-        android:layout_marginTop="@dimen/margin_start"
-        android:checkable="true"
-        android:text=""
-        app:iconSize="@dimen/icons_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
-        app:icon="@drawable/like" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/iv_repost"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="@dimen/icons_width"
-        android:layout_height="@dimen/icons_height"
-        android:layout_margin="@dimen/margin_start"
-        android:contentDescription="@string/description_share"
-        android:text=""
-        app:icon="@drawable/share_icon"
-        app:iconSize="@dimen/icons_size"
-        app:layout_constraintStart_toEndOf="@id/iv_likes"
-        app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
-        tools:layout_editor_absoluteX="140dp"
-        app:iconTint="@color/black"/>
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tv_content" />
 
 
-    <TextView
-        android:id="@+id/tv_views"
-        android:layout_width="@dimen/size_likes"
-        android:layout_height="@dimen/size_likes"
-        android:layout_margin="@dimen/margin_start"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:text="@string/views"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/iv_likes"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/icons_width"
+            android:layout_height="@dimen/icons_height"
+            android:layout_marginTop="@dimen/margin_start"
+            android:checkable="true"
+            android:text=""
+            app:icon="@drawable/like"
+            app:iconSize="@dimen/icons_size"
+            app:iconTint="@color/Gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
 
-    <ImageView
-        android:id="@+id/iv_views"
-        style="@style/Widget.Material3.Chip.Input.Icon"
-        android:layout_width="40dp"
-        android:layout_height="@dimen/icons_size"
-        android:layout_margin="@dimen/margin_start"
-        app:layout_constraintEnd_toStartOf="@id/tv_views"
-        app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
-        app:srcCompat="@drawable/free_icon_font_eye_3917752"
-        app:tint="@color/black" />
-
-    <ImageView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_video_view"
-        android:layout_marginTop="@dimen/padding"
-        android:layout_marginBottom="@dimen/padding"
-        app:layout_constraintBottom_toTopOf="@id/tv_video_published"
-        app:layout_constraintTop_toBottomOf="@id/tv_content"
-        tools:layout_editor_absoluteX="16dp"></ImageView>
-
-    <TextView
-        android:id="@+id/tv_video_published"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding"
-        android:text=""
-        app:layout_constraintTop_toBottomOf="@id/video_view"></TextView>
-
-    <TextView
-        android:id="@+id/tv_video_views"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding"
-        android:layout_marginBottom="@dimen/padding"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@id/barrier_bottom"
-        app:layout_constraintTop_toBottomOf="@id/tv_video_published"></TextView>
-
-    <ImageButton
-        android:id="@+id/button_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_play"
-        app:layout_constraintBottom_toBottomOf="@+id/video_view"
-        app:layout_constraintEnd_toEndOf="@+id/video_view"
-        app:layout_constraintStart_toStartOf="@+id/video_view"
-        app:layout_constraintTop_toTopOf="@+id/video_view"
-        app:layout_editor_absoluteX="160dp"
-        app:layout_editor_absoluteY="330dp"></ImageButton>
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="button_play, video_view, tv_video_published, tv_video_views"></androidx.constraintlayout.widget.Group>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/iv_repost"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/icons_width"
+            android:layout_height="@dimen/icons_height"
+            android:layout_margin="@dimen/margin_start"
+            android:contentDescription="@string/description_share"
+            android:text=""
+            app:icon="@drawable/share_icon"
+            app:iconSize="@dimen/icons_size"
+            app:iconTint="@color/Gray"
+            app:layout_constraintStart_toEndOf="@id/iv_likes"
+            app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
+            tools:layout_editor_absoluteX="140dp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/date_publ"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_likes"
+            android:layout_margin="@dimen/margin_start"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="@string/publ_posts"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/videoContent"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tv_content"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/audioContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginBottom="@dimen/_10dp"
+            android:paddingHorizontal="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/barrier_bottom"
+            app:layout_constraintTop_toBottomOf="@id/videoContent"
+            tools:visibility="visible">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playPauseAudio"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:icon="@drawable/icon_play" />
+
+        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</FrameLayout>

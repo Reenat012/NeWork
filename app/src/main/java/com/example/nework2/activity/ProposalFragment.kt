@@ -14,7 +14,7 @@ class ProposalFragment : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle("Заблокировано")
-                .setIcon(R.drawable.vektor_ng)
+                .setIcon(R.drawable.icon_user_by_anna)
                 .setCancelable(true)
                 .setPositiveButton("Войти") { _, _ ->
                     findNavController().navigate(R.id.action_proposalFragment_to_authFragment2)

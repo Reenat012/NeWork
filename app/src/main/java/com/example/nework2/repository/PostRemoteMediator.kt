@@ -11,129 +11,116 @@ import com.example.nework2.dao.PostRemoteKeyDao
 import com.example.nework2.db.AppDb
 import com.example.nework2.entity.PostEntity
 import com.example.nework2.entity.PostRemoteKeyEntity
+import com.example.nework2.entity.toEntity
 import com.example.nework2.error.ApiError
-import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @OptIn(ExperimentalPagingApi::class)
-class PostRemoteMediator(
+@Singleton
+class PostRemoteMediator @Inject constructor(
     private val apiService: PostApiService,
+    private val appDb: AppDb,
     private val postDao: PostDao,
     private val postRemoteKeyDao: PostRemoteKeyDao,
-    private val appDb: AppDb
 ) : RemoteMediator<Int, PostEntity>() {
+
+    override suspend fun initialize(): InitializeAction =
+        if (postDao.isEmpty()) {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        } else {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        }
+
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PostEntity>
     ): MediatorResult {
+
         try {
-            val result = when (loadType) {
+            val response = when (loadType) {
                 LoadType.REFRESH -> {
-                    val count = postDao.count()
-                    val maxId = postRemoteKeyDao.max() ?: 0//return MediatorResult.Success(false)
-                    if (count == 0) {
-                        //при пустой базе данных стоит отправлять запрос getLatest
-                        apiService.getLatest(state.config.pageSize)
+                    val id = postRemoteKeyDao.max()
+                    if (id != null) {
+                        apiService.postsGetAfterPost(id, state.config.pageSize)
                     } else {
-                        //в остальных случаях getAfter
-                        apiService.getAfter(maxId, state.config.pageSize)
-
-//                        return MediatorResult.Success(false)
+                        apiService.postsGetLatestPage(state.config.pageSize)
                     }
-
-//                    apiService.getLatest(state.config.pageSize)
                 }
 
-                //скролл вниз
-                //postRemoteKeyDao.min() загружает самый старый пост из БД
-                LoadType.APPEND -> {
-                    val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(false)
-                    apiService.getBefore(id, state.config.pageSize)
-                }
-                //когда пользовател скроллит вверх, у него не будет загружаться новая страница
-                ////postRemoteKeyDao.min() загружает самый новый пост из БД
                 LoadType.PREPEND -> {
                     val id = postRemoteKeyDao.max() ?: return MediatorResult.Success(false)
-                    apiService.getAfter(id, state.config.pageSize)
+                    apiService.postsGetAfterPost(id, state.config.pageSize)
+                }
+
+                LoadType.APPEND -> {
+                    val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(false)
+                    apiService.postsGetBeforePost(id, state.config.pageSize)
                 }
             }
 
-            if (!result.isSuccessful) {
-                throw ApiError(result.code(), result.message())
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
             }
 
-            val data = result.body().orEmpty()
+            val body = response.body()
+                ?: throw ApiError(response.code(), response.message())
 
-            appDb.withTransaction {
-                //заполняем таблицу ключей данными, которые приходят по сети
-                //для этого узнаем какой был тип входных данных
-                when (loadType) {
-                    LoadType.REFRESH -> {
-                        //очищаем таблицу с постами
-                        //по условию дз очищать таблицу не нужно
-                        postDao.clear()
-
-                        val count = postDao.count()
-
-                        if (count == 0) {
-                            // Обновляем ключ BEFORE до текущего минимального значения
-                            postRemoteKeyDao.insert(
-                                listOf(
-                                    PostRemoteKeyEntity(
-                                        //берем самый первый пост из пришедшего списка
-                                        PostRemoteKeyEntity.KeyType.AFTER,
-                                        data.first().id
-                                    ),
-                                    PostRemoteKeyEntity(
-                                        //берем самый первый пост из пришедшего списка
-                                        PostRemoteKeyEntity.KeyType.BEFORE,
-                                        data.last().id
+            if (body.isNotEmpty()) {
+                appDb.withTransaction {
+                    when (loadType) {
+                        LoadType.REFRESH -> {
+                            if (postDao.isEmpty()) {
+                                postRemoteKeyDao.insert(
+                                    listOf(
+                                        PostRemoteKeyEntity(
+                                            PostRemoteKeyEntity.KeyType.AFTER,
+                                            body.first().id
+                                        ),
+                                        PostRemoteKeyEntity(
+                                            PostRemoteKeyEntity.KeyType.BEFORE,
+                                            body.last().id
+                                        )
                                     )
                                 )
-                            )
-                        } else {
-                            // Если база данных не пуста, не обновляем ключ BEFORE
-                            //записываем только ключ after
+                            } else {
+                                postRemoteKeyDao.insert(
+                                    PostRemoteKeyEntity(
+                                        PostRemoteKeyEntity.KeyType.AFTER,
+                                        body.first().id
+                                    )
+                                )
+                            }
+                        }
+
+                        LoadType.PREPEND -> {
+                            println("prep")
                             postRemoteKeyDao.insert(
                                 PostRemoteKeyEntity(
-                                    //берем самый первый пост из пришедшего списка
                                     PostRemoteKeyEntity.KeyType.AFTER,
-                                    data.first().id
+                                    body.first().id
+                                )
+                            )
+                        }
+
+                        LoadType.APPEND -> {
+                            postRemoteKeyDao.insert(
+                                PostRemoteKeyEntity(
+                                    PostRemoteKeyEntity.KeyType.BEFORE,
+                                    body.last().id
                                 )
                             )
                         }
                     }
 
-                    LoadType.PREPEND -> {
-                        //скролл вверх
-                        //записываем только ключ after
-                        postRemoteKeyDao.insert(
-                            PostRemoteKeyEntity(
-                                //берем самый первый пост из пришедшего списка
-                                PostRemoteKeyEntity.KeyType.AFTER,
-                                data.first().id
-                            )
-                        )
-                    }
+                    postDao.insertAll(body.toEntity())
 
-                    LoadType.APPEND -> {
-                        //скролл вниз
-                        //записываем только ключ before
-                        postRemoteKeyDao.insert(
-                            PostRemoteKeyEntity(
-                                //берем самый первый пост из пришедшего списка
-                                PostRemoteKeyEntity.KeyType.BEFORE,
-                                data.last().id
-                            )
-                        )
-                    }
                 }
-
-                postDao.insert(data.map { PostEntity.fromDto(it) })
-
             }
 
-            return MediatorResult.Success(data.isEmpty())
-        } catch (e: IOException) {
+            return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
+        } catch (e: Exception) {
             return MediatorResult.Error(e)
         }
     }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Base.CardView"
+        android:layout_width="match_parent"
+        android:id="@+id/cardUser"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/authorAvatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginVertical="8dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/author_avatar_image"
+                android:src="@drawable/icon_user_by_anna"
+                android:padding="@dimen/_10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/authorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                app:layout_constraintBottom_toTopOf="@id/authorLogin"
+                app:layout_constraintStart_toEndOf="@id/authorAvatar"
+                app:layout_constraintTop_toTopOf="@id/authorAvatar"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="Adison Levin" />
+
+            <TextView
+                android:id="@+id/authorLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/authorAvatar"
+                app:layout_constraintStart_toStartOf="@id/authorName"
+                app:layout_constraintTop_toBottomOf="@id/authorName"
+                tools:text="jgummera8" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

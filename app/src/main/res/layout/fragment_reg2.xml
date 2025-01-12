@@ -3,15 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.AuthFragment">
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.Material3.AppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        app:title="@string/registration"
+        tools:ignore="MissingConstraints" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/_25dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ProgressBar>
@@ -29,8 +37,10 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="60dp"
+        android:paddingEnd="60dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,76 +52,91 @@
             android:layout_width="@dimen/avatar_dimension"
             android:layout_height="@dimen/avatar_dimension"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/vektor_ng"/>
+            android:padding="@dimen/_10dp"
+            app:srcCompat="@drawable/icon_user_by_anna"
+            app:tint="@color/Gray" />
 
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_dow_avatar"
-            style="@style/Widget.Material3.Button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:backgroundTint="@color/my_app_secondary"
-            android:text="@string/downland_avatar"></Button>
+            android:layout_marginBottom="@dimen/_10dp"
+            android:text="@string/downland_avatar"></com.google.android.material.button.MaterialButton>
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tv_reg_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/reg_name"></TextView>
-
-        <EditText
-            android:id="@+id/et_reg_name"
+            style="?attr/textInputFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:hint="@string/reg_name"
+            app:errorEnabled="true">
 
-        <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_reg_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tv_reg_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login"></TextView>
-
-        <EditText
-            android:id="@+id/et_reg_login"
+            style="?attr/textInputFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:hint="@string/login"
+            app:errorEnabled="true">
 
-        <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_reg_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tv_reg_password"
-            android:layout_width="wrap_content"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity=""
-            android:text="@string/password"></TextView>
+            android:hint="@string/password"
+            app:errorEnabled="true">
 
-        <EditText
-            android:id="@+id/et_reg_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_reg_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-        <TextView
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tv_reg_retry_password"
-            android:layout_width="wrap_content"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity=""
-            android:text="@string/retry_password"></TextView>
+            app:errorEnabled="true"
+            android:hint="@string/retry_password">
 
-        <EditText
-            android:id="@+id/et_reg_retry_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_reg_retry_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-        <Button
-            style="@style/Widget.Material3.Button"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_in_button"
+            style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

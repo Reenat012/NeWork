@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -13,12 +15,24 @@ android {
 
     defaultConfig {
         applicationId = "com.example.nework2"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()
+        val file = rootProject.file("nework.properties")
+        if (file.exists()) {
+            properties.load(file.inputStream())
+        }
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY", "")}\"")
+        buildConfigField(
+            "String",
+            "MAPKIT_API_KEY",
+            "\"${properties.getProperty("MAPKIT_API_KEY", "")}\""
+        )
     }
 
     buildTypes {
@@ -30,6 +44,8 @@ android {
             )
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -39,6 +55,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -58,6 +75,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx.v285)
     implementation(libs.androidx.navigation.ui.ktx.v285)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.exoplayer)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.firebase.messaging.ktx)
@@ -95,4 +114,6 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.room.paging)
+
+    implementation(libs.maps.mobile.v4100lite)
 }

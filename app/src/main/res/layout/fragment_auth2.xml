@@ -3,8 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.AuthFragment">
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.Material3.AppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        app:title="@string/login" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -56,12 +64,12 @@
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             style="@style/Widget.Material3.Button"
             android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
@@ -69,6 +77,15 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_25dp"
             android:text="@string/sign_in_button" />
+
+        <Button
+            android:id="@+id/if_no_reg"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:text="@string/don_t_have_an_account_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

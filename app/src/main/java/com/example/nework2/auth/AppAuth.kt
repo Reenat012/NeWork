@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.core.content.edit
 import com.example.nework2.api.PushApiService
 import com.example.nework2.dto.PushToken
-import com.example.nework2.dto.Token
+import com.example.nework2.model.AuthModel
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
@@ -30,22 +29,28 @@ class AppAuth @Inject constructor(
 
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
 
+
+    private val idKey = "id"
+    private val tokenKey = "token"
     //хранилище данных
-    private val _data = MutableStateFlow<Token?>(null)
-    private val ID_KEY = "id"
-    private val TOKEN_KEY = "token"
+    private val _authState = MutableStateFlow(
+        AuthModel(
+            prefs.getLong(idKey, 0L),
+            prefs.getString(tokenKey, null)
+        )
+    )
 
     //публичная ссылка на данные
-    val data: StateFlow<Token?> = _data.asStateFlow()
+    val authState: StateFlow<AuthModel> = _authState.asStateFlow()
 
     init {
         //считываем id и token
-        val id = prefs.getLong(ID_KEY, 0)
-        val token = prefs.getString(TOKEN_KEY, null)
+        val id = prefs.getLong(idKey, 0)
+        val token = prefs.getString(tokenKey, null)
 
         if (id != 0L && token != null) {
             //записываем id и token в хранилище данных _data
-            _data.value = Token(id, token)
+            _authState.value = AuthModel(id, token)
         } else {
             //чистим preference
             prefs.edit { clear() }
@@ -54,29 +59,23 @@ class AppAuth @Inject constructor(
         sendPushToken()
     }
 
-    //сохранить аутентификацию
-    @Synchronized //чтобы только один поток мог заходить и обновлять
+    @Synchronized
     fun setAuth(id: Long, token: String) {
-        prefs.edit {
-            //функция, используемая для сохранения длинного целого числа (пара ключ-значение)
-            putLong(ID_KEY, id)
-            putString(TOKEN_KEY, token)
-
-
-            //обновляем хранилище _data
-            _data.value = Token(id, token)
+        _authState.value = AuthModel(id, token)
+        with(prefs.edit()) {
+            putLong(idKey, id)
+            putString(tokenKey, token)
+            commit()
         }
-
-        sendPushToken()
     }
 
-    //очистить аутентификацию
     @Synchronized
-    fun clearAuth() {
-        prefs.edit { clear() }
-        _data.value = null
-
-        sendPushToken()
+    fun removeAuth() {
+        _authState.value = AuthModel()
+        with(prefs.edit()) {
+            clear()
+            commit()
+        }
     }
 
     @EntryPoint
@@ -99,6 +98,4 @@ class AppAuth @Inject constructor(
             }
         }
     }
-
-
 }

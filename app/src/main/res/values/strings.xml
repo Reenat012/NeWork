@@ -58,7 +58,7 @@
     <string name="save_menu" translatable="false">Save</string>
     <string name="menu_edit" translatable="false">Edit\n</string>
     <string name="menu_remove" translatable="false">Remove</string>
-    <string name="downland_avatar" translatable="false">Downland avatar\n</string>
+    <string name="downland_avatar" translatable="false">Download avatar\n</string>
     <string name="reg_name" translatable="false">Name</string>
     <string name="password" translatable="false">Password</string>
     <string name="retry_password" translatable="false">Retry password</string>
@@ -79,7 +79,71 @@
     <string name="channel_remote_description" translatable="false">Notifications from remote server</string>
     <string name="notification_user_save_post" translatable="false">User %1$s add new post:</string>
     <string name="notification_user_content_post" translatable="false">Текст поста: \"%1$s\"</string>
-    <string name="content" translatable="false">Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb</string>
-    <string name="notification_user_liked" translatable="false">User %1$s liked %2$s\\\'s post</string>
-    <string name="notification_test" translatable="false">Test %1$s</string>
+    <string name="content">Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb</string>
+    <string name="notification_user_liked">User %1$s liked %2$s\\\'s post</string>
+    <string name="notification_test">Test %1$s</string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
+    <string name="publ_posts">5 дней назад</string>
+    <string name="Now_pub">только что</string>
+    <string name="post">Post\n</string>
+    <string name="avatar_name_text">Avatar name</string>
+    <string name="image_content">Image content</string>
+    <string name="likers">Likers\n</string>
+    <string name="button_like">Like</string>
+    <string name="mentioned">Mentioned</string>
+    <string name="event">Event\n</string>
+    <string name="author_avatar_image">Author avatar</string>
+    <string name="speakers">Speakers</string>
+    <string name="participants">Participants</string>
+    <string name="connection_error">Connection error</string>
+    <string name="button_new_job">New job\n</string>
+    <string name="wall">Wall\n</string>
+    <string name="jobs">Jobs</string>
+    <string name="select_date">Select date</string>
+    <string name="date">Date</string>
+    <string name="type">Type</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="invalid_date_format">Invalid date format</string>
+    <string name="menu_option">Menu</string>
+    <string name="text_post">Text post</string>
+    <string name="button_share">Share</string>
+    <string name="in_search_work">In search work</string>
+    <string name="the_user_is_already_registered">User is already registered</string>
+    <string name="incorrect_photo_format">Incorrect photo format</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="user_unregistered">User unregistered</string>
+    <string name="empty_login">Empty login</string>
+    <string name="empty_password">Empty password</string>
+    <string name="attachment_15MB">Attachment 15 Mb</string>
+    <string name="whats_is_event">Whats is event</string>
+    <string name="remove">Remove</string>
+    <string name="button_add_photo">Add photo</string>
+    <string name="button_add_file">Add file</string>
+    <string name="button_add_user">Add user</string>
+    <string name="button_add_location">Add user</string>
+    <string name="button_new_post">New post</string>
+    <string name="button_new_event">New event</string>
+    <string name="task_cancelled">Task canceled</string>
+    <string name="user">User</string>
+    <string name="present_time">Present time</string>
+    <string name="name">Name</string>
+    <string name="position">Position</string>
+    <string name="link">Link</string>
+    <string name="date_start">start</string>
+    <string name="dash">-</string>
+    <string name="date_finish">finish</string>
+    <string name="empty_field">Empty field</string>
+    <string name="end_date">End date</string>
+    <string name="enter_dates">Enter date</string>
+    <string name="icon_calendar">Calendar</string>
+    <string name="mm_dd_yyyy">mm/dd/yyyy</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="name_is_empty">Name is empty</string>
+    <string name="passwords_is_empty">Password is empty</string>
+    <string name="passwords_dont_match">Password don`t match</string>
+    <string name="registration">Registration</string>
+    <string name="unknown_error">Unknow error</string>
+    <string name="create">Create\n</string>
 </resources>
