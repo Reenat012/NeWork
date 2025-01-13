@@ -20,7 +20,9 @@ import com.example.nework2.model.InvolvedItemModel
 import com.example.nework2.model.InvolvedItemType
 import com.example.nework2.repository.AuthRepository
 import com.example.nework2.repository.EventRepository
+import com.example.nework2.repository.Repository
 import com.example.nework2.repository.UserRepository
+import com.example.nework2.repositoryImpl.RepositoryImpl
 import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +38,6 @@ import java.io.File
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 val emptyEvent = Event(
     id = 0,
     authorId = 0,
@@ -62,8 +63,8 @@ val emptyEvent = Event(
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class EventViewModel @Inject constructor(
-    private val eventRepository: EventRepository,
-    private val userRepository: UserRepository,
+    private val eventRepository: RepositoryImpl,
+    private val userRepository: RepositoryImpl,
     appAuth: AppAuth
 ) : ViewModel() {
 
@@ -133,7 +134,6 @@ class EventViewModel @Inject constructor(
         eventRepository.deleteEvent(event.id)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun setCoord(point: Point?) {
         if (point != null) {
             _editedEvent.value = _editedEvent.value?.copy(

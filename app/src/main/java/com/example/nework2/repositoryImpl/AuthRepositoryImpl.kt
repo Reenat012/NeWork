@@ -24,9 +24,10 @@ class AuthRepositoryImpl @Inject constructor(
     @ApplicationContext
     private val context: Context,
     private val apiService: UserApiService,
-    private var appAuth: AppAuth,
-    override val dataAuth: StateFlow<AuthModel> = appAuth.authState
+    private var appAuth: AppAuth
 ) : AuthRepository {
+
+    override val dataAuth: StateFlow<AuthModel> = appAuth.authState
 
     override suspend fun register(
         login: String,

@@ -29,13 +29,16 @@ import java.io.IOException
 import javax.inject.Inject
 import androidx.paging.map
 
-class EventRepositoryImpl @OptIn(ExperimentalPagingApi::class)
-@Inject constructor(
+class EventRepositoryImpl @Inject constructor(
     @ApplicationContext
-    eventRemoteMediator: EventRemoteMediator,
     private val apiService: EventApiService,
     private val eventDao: EventDao,
-    @SuppressLint("NewApi") override val dataEvent: Flow<PagingData<FeedItem>> = Pager(
+    eventRemoteMediator: EventRemoteMediator
+    ) : EventRepository {
+
+    @OptIn(ExperimentalPagingApi::class)
+    @SuppressLint("NewApi")
+    override val dataEvent: Flow<PagingData<FeedItem>> = Pager(
         config = PagingConfig(pageSize = 4, enablePlaceholders = false),
         pagingSourceFactory = { eventDao.pagingSource() },
         remoteMediator = eventRemoteMediator
@@ -44,7 +47,6 @@ class EventRepositoryImpl @OptIn(ExperimentalPagingApi::class)
             it.map(EventEntity::toDto)
         }
 
-    ) : EventRepository {
     override suspend fun saveEvent(event: Event) {
         try {
             val response = apiService.eventsSaveEvent(event)

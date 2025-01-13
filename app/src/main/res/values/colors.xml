@@ -9,7 +9,7 @@
     <color name="my_app_error">#FF0000</color>  // Пример красного цвета для ошибок
 
     <color name="my_app_primary_variant">#2F4F4F</color> // Вариант основного цвета
-    <color name="my_app_secondary_variant">#00FF8F</color> // Вариант вторичного цвета
+    <color name="my_app_secondary_variant">#D8BFD8</color> // Вариант вторичного цвета
     <color name="my_app_surface">#FFFFFF</color> // Пример белого цвета для поверхностей
     <color name="my_app_on_primary">#FFFFFF</color> // Цвет надписей на кнопках
     <color name="my_app_on_secondary">#000000</color> // Пример черного цвета для вторичного цвета
@@ -22,11 +22,11 @@
     <color name="my_app_primary_container">#6200EE</color> // Пример красного цвета для контейнера
     <color name="my_app_on_primary_container">#FFFFFF</color> // Пример белого цвета для контейнера
 
-    <color name="my_app_tertiary">#00FF8F</color> // Пример светло-зеленого цвета
+    <color name="my_app_tertiary">#D8BFD8</color> // Пример светло-зеленого цвета
     <color name="my_app_on_tertiary">#000000</color> // Пример черного цвета
-    <color name="my_app_tertiary_container">#00FF8F</color> // Пример светло-зеленого цвета для контейнера
+    <color name="my_app_tertiary_container">#D8BFD8</color> // Пример светло-зеленого цвета для контейнера
     <color name="my_app_on_tertiary_container">#000000</color> // Пример черного цвета для третичного контейнера
-    <color name="my_app_secondary_container">#00FF00</color> // Пример зеленого цвета для контейнера
+    <color name="my_app_secondary_container">#D8BFD8</color> // Пример зеленого цвета для контейнера
     <color name="my_app_on_secondary_container">#000000</color> // Пример черного цвета для контейнера
 
     <color name="my_app_surface_variant">#F5F5F5</color> // Пример светло-серого цвета для поверхности

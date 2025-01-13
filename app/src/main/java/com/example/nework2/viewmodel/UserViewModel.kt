@@ -8,7 +8,9 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.nework2.dto.FeedItem
 import com.example.nework2.dto.UserResponse
+import com.example.nework2.repository.Repository
 import com.example.nework2.repository.UserRepository
+import com.example.nework2.repositoryImpl.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: RepositoryImpl
 ) : ViewModel() {
     val dataUsers: Flow<PagingData<FeedItem>> =
         userRepository.dataUsers.map {

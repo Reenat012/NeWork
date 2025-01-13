@@ -34,10 +34,10 @@ class FeedFragment(
             token = state
         }
 
-
         val childNavHostFragment =
             childFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         val childNavController = childNavHostFragment.navController
+
         binding.bottomNavigation.setupWithNavController(childNavController)
 
         binding.topAppBar.setOnMenuItemClickListener { menu ->
@@ -57,10 +57,8 @@ class FeedFragment(
                 else -> false
             }
         }
-
         return binding.root
     }
-
 }
 
 

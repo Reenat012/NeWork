@@ -20,7 +20,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
 
     private var login = ""

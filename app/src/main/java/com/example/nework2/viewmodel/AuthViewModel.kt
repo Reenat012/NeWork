@@ -10,6 +10,8 @@ import com.example.nework2.enumeration.AttachmentType
 import com.example.nework2.model.AttachmentModel
 import com.example.nework2.model.AuthModel
 import com.example.nework2.repository.AuthRepository
+import com.example.nework2.repository.Repository
+import com.example.nework2.repositoryImpl.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: RepositoryImpl
 ) : ViewModel() {
 
     val dataAuth: LiveData<AuthModel> = authRepository.dataAuth.asLiveData(Dispatchers.Default)

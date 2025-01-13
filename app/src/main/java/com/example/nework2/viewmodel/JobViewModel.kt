@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nework2.dto.Job
 import com.example.nework2.repository.JobRepository
+import com.example.nework2.repository.Repository
+import com.example.nework2.repositoryImpl.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
@@ -13,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JobViewModel @Inject constructor(
-    private val jobRepository: JobRepository,
+    private val jobRepository: RepositoryImpl,
 ) : ViewModel() {
     val data: LiveData<List<Job>> = jobRepository.dataJob
 
