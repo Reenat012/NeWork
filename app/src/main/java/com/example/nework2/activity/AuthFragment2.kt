@@ -27,7 +27,7 @@ class AuthFragment2 : Fragment() {
     ): View {
         val binding = FragmentAuth2Binding.inflate(inflater, container, false)
 
-        binding.textLogin.addTextChangedListener {
+        binding.login.addTextChangedListener {
             login = it.toString()
             binding.apply {
                 login.error = null
@@ -35,7 +35,7 @@ class AuthFragment2 : Fragment() {
             }
         }
 
-        binding.textPassword.addTextChangedListener {
+        binding.login.addTextChangedListener {
             password = it.toString()
             binding.apply {
                 password.error = null

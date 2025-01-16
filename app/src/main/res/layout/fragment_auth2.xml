@@ -18,8 +18,8 @@
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/_25dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ProgressBar>
@@ -42,36 +42,44 @@
             android:layout_marginBottom="@dimen/_25dp"
             android:src="@drawable/vektor_ng" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login"></TextView>
-
-        <EditText
-            android:id="@+id/login"
+            style="@style/Widget.Design.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:layout_marginBottom="@dimen/_10dp"
+            android:hint="@string/login">
 
-        <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity=""
-            android:text="@string/password"></TextView>
-
-        <EditText
-            android:id="@+id/password"
+            style="@style/Widget.Design.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
+            android:hint="@string/password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3.Button"
             android:id="@+id/sign_in_button"
+            style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -81,11 +89,11 @@
         <Button
             android:id="@+id/if_no_reg"
             style="@style/Widget.Material3.Button.IconButton"
-            android:text="@string/don_t_have_an_account_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10dp"
-            android:layout_gravity="center"/>
+            android:text="@string/don_t_have_an_account_register" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
