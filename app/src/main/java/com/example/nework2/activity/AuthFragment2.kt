@@ -35,7 +35,7 @@ class AuthFragment2 : Fragment() {
             }
         }
 
-        binding.login.addTextChangedListener {
+        binding.password.addTextChangedListener {
             password = it.toString()
             binding.apply {
                 password.error = null
