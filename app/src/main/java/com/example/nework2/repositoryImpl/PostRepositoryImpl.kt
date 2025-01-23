@@ -10,7 +10,6 @@ import com.example.nework2.api.PostApiService
 import com.example.nework2.dao.PostDao
 import com.example.nework2.dao.PostRemoteKeyDao
 import com.example.nework2.db.AppDb
-import com.example.nework2.dto.Ad
 import com.example.nework2.dto.Attachment
 import com.example.nework2.dto.FeedItem
 import com.example.nework2.dto.Media
@@ -59,14 +58,6 @@ class PostRepositoryImpl @Inject constructor(
     ).flow
         .map { pagingData ->
             pagingData.map(PostEntity::toDto)
-                //реализуем вставку элементов с рекламой
-                //insertSeparators последовательно обходит элементы от previous (предыдущий элемент) до next(следующий элемент)
-                .insertSeparators { previous, next ->
-                    //через каждые 5 элементов впихиваем рекламу
-                    if (previous?.id?.rem(5)?.toInt() == 0) {
-                        Ad(Random.nextLong(), "figma.jpg")
-                    } else null
-                }
         }
 
     override suspend fun getUser(id: Long): UserResponse {
@@ -160,7 +151,17 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deletePost(id: Long) {
-        TODO("Not yet implemented")
+        try {
+            val response = apiService.postsDeletePost(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            postDao.deletePost(id)
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw com.example.nework2.error.UnknownError
+        }
     }
 //        postDao.getAllVisible().map { it.map(PostEntity::toDto) }
 

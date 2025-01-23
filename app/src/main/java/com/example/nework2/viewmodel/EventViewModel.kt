@@ -22,6 +22,7 @@ import com.example.nework2.repository.AuthRepository
 import com.example.nework2.repository.EventRepository
 import com.example.nework2.repository.Repository
 import com.example.nework2.repository.UserRepository
+import com.example.nework2.repositoryImpl.PostRepositoryImpl
 import com.example.nework2.repositoryImpl.RepositoryImpl
 import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,6 +66,7 @@ val emptyEvent = Event(
 class EventViewModel @Inject constructor(
     private val eventRepository: RepositoryImpl,
     private val userRepository: RepositoryImpl,
+    private val postRepositoryImpl: PostRepositoryImpl,
     appAuth: AppAuth
 ) : ViewModel() {
 
@@ -185,7 +187,7 @@ class EventViewModel @Inject constructor(
                 if (it.size > 4) it.take(5) else it
             }
             .map {
-                viewModelScope.async { userRepository.getUser(it) }
+                viewModelScope.async { postRepositoryImpl.getUser(it) }
             }.awaitAll()
 
         synchronized(involvedData) {

@@ -79,9 +79,7 @@ class PostViewModel @Inject constructor(
         }.flowOn(Dispatchers.Default)
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private val _editedPost = MutableLiveData(emptyPost)
-    @RequiresApi(Build.VERSION_CODES.O)
     val editedPost: LiveData<Post> = _editedPost
 
     val postData = MutableLiveData<Post>()
@@ -93,7 +91,6 @@ class PostViewModel @Inject constructor(
         get() = _attachmentData
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun savePost(content: String) {
         val text = content.trim()
         if (_editedPost.value?.content == text) {
@@ -131,7 +128,6 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun edit(post: Post) {
         _editedPost.value = post
     }
@@ -144,7 +140,6 @@ class PostViewModel @Inject constructor(
         _attachmentData.value = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun setCoord(point: Point?) {
         if (point != null) {
             _editedPost.value = _editedPost.value?.copy(
@@ -153,14 +148,12 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun removeCoords() {
         _editedPost.value = _editedPost.value?.copy(
             coords = null
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun setMentionId(selectedUsers: List<Long>) {
         _editedPost.value = _editedPost.value?.copy(
             mentionIds = selectedUsers

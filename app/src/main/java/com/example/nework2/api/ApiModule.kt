@@ -70,7 +70,6 @@ class ApiModule {
         }
         .build()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit = Retrofit.Builder()
         .addConverterFactory(

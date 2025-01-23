@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_card_post"
-    android:background="@color/white"
-    android:padding="@dimen/padding">
+    android:background="@color/white">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardPost"
@@ -19,7 +18,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding">
 
         <ImageView
             android:id="@+id/photo_iv"
@@ -110,15 +110,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/iv_likes"
-            style="@style/Widget.Material3.Button.IconButton"
+            style="@style/Widget.AppTheme.LikeButton"
             android:layout_width="@dimen/icons_width"
             android:layout_height="@dimen/icons_height"
             android:layout_marginTop="@dimen/margin_start"
             android:checkable="true"
-            android:text=""
             app:icon="@drawable/like"
             app:iconSize="@dimen/icons_size"
-            app:iconTint="@color/Gray"
+            android:contentDescription="@string/button_like"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
@@ -137,7 +136,6 @@
             app:layout_constraintStart_toEndOf="@id/iv_likes"
             app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
             tools:layout_editor_absoluteX="140dp" />
-
 
         <TextView
             android:id="@+id/date_publ"

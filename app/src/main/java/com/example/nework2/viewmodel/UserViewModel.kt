@@ -10,6 +10,7 @@ import com.example.nework2.dto.FeedItem
 import com.example.nework2.dto.UserResponse
 import com.example.nework2.repository.Repository
 import com.example.nework2.repository.UserRepository
+import com.example.nework2.repositoryImpl.PostRepositoryImpl
 import com.example.nework2.repositoryImpl.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: RepositoryImpl
+    private val userRepository: RepositoryImpl,
+    private val postRepositoryImpl: PostRepositoryImpl
 ) : ViewModel() {
     val dataUsers: Flow<PagingData<FeedItem>> =
         userRepository.dataUsers.map {
@@ -34,7 +36,7 @@ class UserViewModel @Inject constructor(
     val dataUser: LiveData<UserResponse> = _dataUser
 
     fun getUser(userId: Long) = viewModelScope.launch {
-        _dataUser.value = userRepository.getUser(userId)
+        _dataUser.value = postRepositoryImpl.getUser(userId)
     }
 
 }

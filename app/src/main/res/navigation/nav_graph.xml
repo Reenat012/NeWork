@@ -104,7 +104,11 @@
         android:id="@+id/usersFragment"
         android:name="com.example.nework2.activity.UsersFragment"
         android:label="fragment_users"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/fragment_users" >
+        <action
+            android:id="@+id/action_usersFragment_to_detailUserFragment"
+            app:destination="@id/detailUserFragment" />
+    </fragment>
     <fragment
         android:id="@+id/postsFragment"
         android:name="com.example.nework2.activity.PostsFragment"

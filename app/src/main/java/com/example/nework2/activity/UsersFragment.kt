@@ -74,6 +74,7 @@ class UsersFragment : Fragment() {
             else -> null
         }
 
+
         val userAdapter = UserAdapter(object : OnInteractionListener {
             override fun like(feedItem: FeedItem) {}
             override fun delete(feedItem: FeedItem) {}
@@ -89,7 +90,7 @@ class UsersFragment : Fragment() {
 
             override fun openCard(feedItem: FeedItem) {
                 parentNavController?.navigate(
-                    R.id.action_feedFragment_to_usersFragment,
+                    R.id.action_feedFragment_to_detailUserFragment,
                     bundleOf(AppConst.USER_ID to feedItem.id)
                 )
             }
@@ -163,8 +164,6 @@ class UsersFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-
         return binding.root
     }
-
 }

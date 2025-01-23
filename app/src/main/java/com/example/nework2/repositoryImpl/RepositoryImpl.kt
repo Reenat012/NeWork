@@ -171,112 +171,9 @@ class RepositoryImpl @Inject constructor(
         appAuth.removeAuth()
     }
 
-    override suspend fun getUser(id: Long): UserResponse {
-        try {
-            val response = userApiService.usersGetUser(id)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-
-            return response.body() ?: throw ApiError(response.code(), response.message())
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw com.example.nework2.error.UnknownError
-        }
-    }
-
-    override suspend fun like(post: Post) {
-        try {
-            val response = when (post.likedByMe) {
-                true -> {
-                    postApiService.postsUnLikePost(post.id)
-                }
-
-                else -> {
-                    postApiService.postsLikePost(post.id)
-                }
-            }
-
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-
-            postDao.insert(PostEntity.fromDto(body))
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw com.example.nework2.error.UnknownError
-        }
-    }
-
-    override suspend fun savePost(post: Post) {
-        try {
-            val response = postApiService.postsSavePost(post)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw com.example.nework2.error.UnknownError
-        }
-    }
-
-    override suspend fun savePostWithAttachment(post: Post, attachmentModel: AttachmentModel) {
-        try {
-            val mediaResponse = saveMedia(attachmentModel.file)
-            if (!mediaResponse.isSuccessful) {
-                throw ApiError(mediaResponse.code(), mediaResponse.message())
-            }
-            val media = mediaResponse.body() ?: throw ApiError(
-                mediaResponse.code(),
-                mediaResponse.message()
-            )
-
-            val response = postApiService.postsSavePost(
-                post.copy(
-                    attachment = Attachment(
-                        media.id,
-                        attachmentModel.attachmentType
-                    )
-                )
-            )
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
-
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw com.example.nework2.error.UnknownError
-        }
-    }
-
     private suspend fun saveMedia(file: File): Response<Media> {
         val part = MultipartBody.Part.createFormData("file", file.name, file.asRequestBody())
         return eventApiService.mediaSaveMedia(part)
-    }
-
-    override suspend fun deletePost(id: Long) {
-        try {
-            val response = postApiService.postsDeletePost(id)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            postDao.deletePost(id)
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw com.example.nework2.error.UnknownError
-        }
     }
 
     override suspend fun saveEvent(event: Event) {
@@ -394,10 +291,14 @@ class RepositoryImpl @Inject constructor(
             val body = response.body() ?: throw ApiError(response.code(), response.message())
 
             _dataJob.value = body
-        } catch (e: IOException) {
-            throw NetworkError
         } catch (e: Exception) {
-            throw com.example.nework2.error.UnknownError
+            if (e is IOException) {
+                throw NetworkError
+            } else if (e is ApiError) {
+                throw Error("ApiError")
+            } else {
+                throw com.example.nework2.error.UnknownError
+            }
         }
     }
 

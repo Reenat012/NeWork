@@ -9,6 +9,7 @@ import com.example.nework2.databinding.CardUserBinding
 import com.example.nework2.dto.FeedItem
 import com.example.nework2.dto.UserResponse
 import com.example.nework2.view.load
+import com.example.nework2.view.loadAvatar
 
 class UserAdapter(
     private val onInteractionListener: OnInteractionListener,
@@ -38,7 +39,7 @@ class UserViewHolder(
         with(binding) {
             authorName.text = userResponse.name
             authorLogin.text = userResponse.login
-            userResponse.avatar?.let { authorAvatar.load(it) }
+            authorAvatar.loadAvatar(userResponse.avatar)
             checkBox.isVisible = selectUser
             checkBox.isChecked = userResponse.selected
 

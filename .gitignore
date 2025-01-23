@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+nework.properties
+apikey.md
