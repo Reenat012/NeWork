@@ -7,5 +7,5 @@ import java.io.File
 data class AttachmentModel(
     val attachmentType: AttachmentType,
     val uri: Uri,
-    val file: File,
+    val file: File
 )

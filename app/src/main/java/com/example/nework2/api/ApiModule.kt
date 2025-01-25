@@ -1,17 +1,22 @@
 package com.example.nework2.api
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.JsonToken
+import android.util.Log
 import com.example.nework2.BuildConfig
 import com.example.nework2.auth.AppAuth
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import com.google.gson.TypeAdapter
+import com.google.gson.TypeAdapterFactory
+import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -52,7 +57,6 @@ class ApiModule {
 
     @Provides
     fun provideOkHttp(
-        logging: HttpLoggingInterceptor,
         appAuth: AppAuth
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
@@ -69,6 +73,7 @@ class ApiModule {
             chain.proceed(request)
         }
         .build()
+
 
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit = Retrofit.Builder()

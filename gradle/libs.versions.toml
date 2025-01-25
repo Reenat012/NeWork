@@ -16,6 +16,8 @@ gson = "2.10.1"
 hiltAndroid = "2.51.1"
 hiltCompiler = "2.51.1"
 imagepicker = "2.1"
+jacksonCore = "2.12.3"
+jacksonDatabind = "2.12.3"
 kotlin = "2.0.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -26,6 +28,8 @@ kotlinxCoroutinesAndroid = "1.8.1"
 ksp = "4.14.2"
 legacySupportV4 = "1.0.0"
 lifecycleViewmodelKtx = "2.8.7"
+logbackClassic = "1.2.3"
+logbackCore = "1.2.3"
 loggingInterceptor = "4.12.0"
 mapkit = "4.1.0"
 mapsMobile = "4.1.1"
@@ -84,12 +88,16 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 imagepicker = { module = "com.github.dhaval2404:imagepicker", version.ref = "imagepicker" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jacksonDatabind" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jacksonCore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "ksp" }
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logbackCore" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 mapkit = { module = "com.yandex.android:mapkit", version.ref = "mapkit" }
 maps-mobile = { module = "com.yandex.android:maps.mobile", version.ref = "mapsMobile" }

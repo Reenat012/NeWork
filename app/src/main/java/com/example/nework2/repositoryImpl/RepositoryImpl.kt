@@ -1,6 +1,7 @@
 package com.example.nework2.repositoryImpl
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,6 +37,7 @@ import com.example.nework2.repository.EventRemoteMediator
 import com.example.nework2.repository.PostRemoteMediator
 import com.example.nework2.repository.Repository
 import com.example.nework2.repository.UserRemoteMediator
+import com.google.gson.JsonSyntaxException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -296,11 +298,23 @@ class RepositoryImpl @Inject constructor(
                 throw NetworkError
             } else if (e is ApiError) {
                 throw Error("ApiError")
-            } else {
+            }
+            else if (e is JsonSyntaxException) {
+                // Логируем ошибку и обрабатываем некорректный JSON
+                Log.e("JSON Error", "Error parsing JSON: ${e.message}")
+                // Проверяем, что именно вызвало исключение
+                if (e.cause != null && e.cause is IllegalStateException) {
+                    val illegalStateException = e.cause as IllegalStateException
+                    if (illegalStateException.message == "Expected a string but was NULL") {
+                        // Обрабатываем случай, когда ожидалась строка, но было null
+                        // Здесь можно добавить дополнительную обработку ошибки
+                        Log.e("JSON Error", "String expected but was null at line 1 column 482 path $[3].finish")
+                    }}
+            else {
                 throw com.example.nework2.error.UnknownError
             }
         }
-    }
+    }}
 
     override suspend fun saveJob(job: Job) {
         try {

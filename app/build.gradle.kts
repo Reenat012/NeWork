@@ -116,4 +116,9 @@ dependencies {
     implementation(libs.androidx.room.paging)
 
     implementation(libs.maps.mobile.v4100lite)
+
+    implementation (libs.logback.classic)
+    implementation (libs.logback.core)
+    implementation (libs.jackson.core)
+    implementation (libs.jackson.databind)
 }

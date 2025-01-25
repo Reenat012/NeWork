@@ -49,7 +49,7 @@ class JobsFragment : Fragment() {
                         append(job.start.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                         append(" - ")
                         append(
-                            if (job.finish.year == emptyOffsetDateTime.year) getString(R.string.present_time) else job.finish.format(
+                            if ((job.finish?.year ?: 0) == emptyOffsetDateTime.year) getString(R.string.present_time) else job.finish?.format(
                                 DateTimeFormatter.ofPattern("dd.MM.yyyy")
                             )
                         )

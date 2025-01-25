@@ -7,6 +7,6 @@ data class Job(
     val name: String,
     val position: String,
     val start: OffsetDateTime,
-    val finish: OffsetDateTime,
+    val finish: OffsetDateTime? = null,
     val link: String? = null
 )
