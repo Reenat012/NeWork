@@ -38,9 +38,7 @@ interface PostApiService {
 
     @Multipart
     @POST("api/media")
-    suspend fun mediaSaveMedia(
-        @Part file: MultipartBody.Part
-    ): Response<Media>
+    suspend fun mediaSaveMedia(@Part file: MultipartBody.Part): Response<Media>
 
     @GET("api/posts/{id}/newer")
     suspend fun postsGetNewerPost(@Path("id") id: Long): Response<List<Post>>

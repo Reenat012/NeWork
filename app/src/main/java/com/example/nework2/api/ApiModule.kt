@@ -1,6 +1,6 @@
 package com.example.nework2.api
 
-import android.util.JsonToken
+import com.google.gson.stream.JsonToken
 import android.util.Log
 import com.example.nework2.BuildConfig
 import com.example.nework2.auth.AppAuth
@@ -81,16 +81,21 @@ class ApiModule {
             GsonConverterFactory.create(
                 GsonBuilder().registerTypeAdapter(
                     OffsetDateTime::class.java,
-                    object : TypeAdapter<OffsetDateTime>() {
+                    object : TypeAdapter<OffsetDateTime?>() {
                         override fun write(out: JsonWriter?, value: OffsetDateTime?) {
                             out?.value(value?.toEpochSecond())
                         }
 
-                        override fun read(jsonReader: JsonReader): OffsetDateTime {
-                            return OffsetDateTime.ofInstant(
-                                Instant.parse(jsonReader.nextString()),
-                                ZoneId.systemDefault()
-                            )
+                        override fun read(jsonReader: JsonReader): OffsetDateTime? {
+                            return if (jsonReader.peek() != JsonToken.NULL) {
+                                OffsetDateTime.ofInstant(
+                                    Instant.parse(jsonReader.nextString()),
+                                    ZoneId.systemDefault()
+                                )
+                            } else {
+                                jsonReader.nextNull()
+                                null
+                            }
                         }
                     }).create()
             )

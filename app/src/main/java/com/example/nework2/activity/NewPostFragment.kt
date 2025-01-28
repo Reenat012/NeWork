@@ -166,15 +166,14 @@ class NewPostFragment : Fragment() {
         postViewModel.attachmentData.observe(viewLifecycleOwner) { attachment ->
             when (attachment?.attachmentType) {
                 AttachmentType.IMAGE -> {
-                    binding.previewPhoto.loadAttachment(attachment.uri.toString())
-                    binding.previewPhoto.isVisible = true
+//                   binding.previewPhoto.loadAttachment(attachment.uri.toString())
+                    binding.previewPhoto.setImageURI(attachment.uri)
                     binding.previewContainer.isVisible = true
                 }
                 AttachmentType.VIDEO -> {}
 
                 AttachmentType.AUDIO -> {}
                 null -> {
-                    binding.previewPhoto.isVisible = false
                     binding.previewContainer.isVisible = false
                 }
             }

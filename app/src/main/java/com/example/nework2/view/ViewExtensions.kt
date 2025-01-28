@@ -8,8 +8,8 @@ import com.example.nework2.R
 fun ImageView.loadAvatar(url: String?) {
     Glide.with(this)
         .load(url)
-        .error(R.drawable.icon_error)
-        .placeholder(R.drawable.icon_settings)
+        .error(R.drawable.users)
+        .placeholder(R.drawable.users)
         .timeout(10_000)
         .circleCrop()
         .into(this)
@@ -18,7 +18,7 @@ fun ImageView.loadAvatar(url: String?) {
 fun ImageView.load(url: String) {
     Glide.with(this)
         .load(url)
-        .placeholder(R.drawable.icon_settings)
+        .placeholder(R.drawable.users)
         .error(R.drawable.icon_error)
         .timeout(10_000)
         .circleCrop()
@@ -28,7 +28,7 @@ fun ImageView.load(url: String) {
 fun ImageView.loadWithoutCircle(url: String) {
     Glide.with(this)
         .load(url)
-        .placeholder(R.drawable.icon_settings)
+        .placeholder(R.drawable.users)
         .error(R.drawable.icon_error)
         .timeout(10_000)
         .into(this)
@@ -40,6 +40,7 @@ fun ImageView.loadAttachment(url: String?) {
     }
     Glide.with(this)
         .load(url)
+        .placeholder(R.drawable.users)
         .error(R.drawable.icon_error)
         .timeout(10_000)
         .into(this)

@@ -115,7 +115,7 @@
             android:layout_height="@dimen/icons_height"
             android:layout_marginTop="@dimen/margin_start"
             android:checkable="true"
-            app:icon="@drawable/like"
+            app:icon="@drawable/icon_like"
             app:iconSize="@dimen/icons_size"
             android:contentDescription="@string/button_like"
             app:layout_constraintBottom_toBottomOf="parent"

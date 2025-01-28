@@ -9,6 +9,7 @@ import com.example.nework2.databinding.CardAvatarBinding
 import com.example.nework2.dto.FeedItem
 import com.example.nework2.dto.UserResponse
 import com.example.nework2.view.load
+import com.example.nework2.view.loadAvatar
 
 
 class AvatarAdapter(
@@ -43,7 +44,7 @@ class AvatarViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: UserResponse) {
-        user.avatar?.let { binding.avatar.load(it) }
+        binding.avatar.loadAvatar(user.avatar)
     }
 
     fun addButton() {

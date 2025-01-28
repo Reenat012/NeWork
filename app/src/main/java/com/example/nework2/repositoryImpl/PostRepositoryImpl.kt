@@ -38,10 +38,6 @@ class PostRepositoryImpl @Inject constructor(
     postRemoteKeyDao: PostRemoteKeyDao,
     appDb: AppDb
 ) : PostRepository {
-    companion object {
-        private const val BASE_URL = "http://10.0.2.2:9999/"
-    }
-
     //подписка на локальную БД с видимыми постами
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<FeedItem>> = Pager(
@@ -119,35 +115,37 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun savePostWithAttachment(post: Post, attachmentModel: AttachmentModel) {
-        try {
-            val mediaResponse = saveMedia(attachmentModel.file)
-            if (!mediaResponse.isSuccessful) {
-                throw ApiError(mediaResponse.code(), mediaResponse.message())
-            }
-            val media = mediaResponse.body() ?: throw ApiError(
-                mediaResponse.code(),
-                mediaResponse.message()
-            )
+        val mediaResponse = saveMedia(attachmentModel.file)
 
-            val response = apiService.postsSavePost(
-                post.copy(
-                    attachment = Attachment(
-                        media.id,
-                        attachmentModel.attachmentType
-                    )
-                )
-            )
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
 
+        val postWithAttachment = try {
+            post.copy(attachment = mediaResponse?.let { Attachment(url = it.id, type = attachmentModel.attachmentType) })
         } catch (e: IOException) {
             throw NetworkError
+        } catch (e: NullPointerException) {
+            throw NullPointerException("Hello, Bob!")
         } catch (e: Exception) {
             throw UnknownError
+
         }
+
+        apiService.postsSavePost(postWithAttachment)
+
+//            val response = apiService.postsSavePost(
+//                post.copy(
+//                    attachment = Attachment(
+//                        media.id,
+//                        attachmentModel.attachmentType
+//                    )
+//                )
+//            )
+//            if (!response.isSuccessful) {
+//                throw ApiError(response.code(), response.message())
+//            }
+//            val body = response.body() ?: throw ApiError(response.code(), response.message())
+//            postDao.insert(PostEntity.fromDto(body))
+
+
     }
 
     override suspend fun deletePost(id: Long) {
@@ -165,8 +163,14 @@ class PostRepositoryImpl @Inject constructor(
     }
 //        postDao.getAllVisible().map { it.map(PostEntity::toDto) }
 
-    private suspend fun saveMedia(file: File): Response<Media> {
-        val part = MultipartBody.Part.createFormData("file", file.name, file.asRequestBody())
-        return apiService.mediaSaveMedia(part)
+    private suspend fun saveMedia(file: File): Media? {
+        val saveMediaResponse = apiService.mediaSaveMedia(MultipartBody.Part.createFormData("file", file.name, file.asRequestBody()))
+
+        //проверяем на соответствие ожидаемому
+        if (!saveMediaResponse.isSuccessful) {
+            throw RuntimeException(saveMediaResponse.message())
+        }
+        return saveMediaResponse.body()
+        //ответ от сервера приходит с null, который тянется дальше и роняет приложение
     }
 }

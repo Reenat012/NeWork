@@ -49,7 +49,9 @@
             <FrameLayout
                 android:id="@+id/preview_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <ImageView
                     android:id="@+id/preview_photo"
@@ -57,10 +59,8 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/image_content"
-                    android:visibility="gone"
                     tools:src="@tools:sample/avatars"
-                    tools:visibility="visible"
-                    tools:srcCompat="@tools:sample/avatars[4]"></ImageView>
+                    tools:srcCompat="@tools:sample/avatars[4]" />
 
                 <Button
                     style="@style/Widget.Material3.Button"
@@ -69,9 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginBottom="@dimen/_10dp"
-                    android:text="@string/clear"
-                    android:visibility="gone"
-                    tools:visibility="visible"></Button>
+                    android:text="@string/clear" />
             </FrameLayout>
 
             <FrameLayout
