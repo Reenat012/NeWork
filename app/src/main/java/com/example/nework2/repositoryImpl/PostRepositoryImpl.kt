@@ -1,5 +1,6 @@
 package com.example.nework2.repositoryImpl
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -29,6 +30,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -166,11 +168,28 @@ class PostRepositoryImpl @Inject constructor(
     private suspend fun saveMedia(file: File): Media? {
         val saveMediaResponse = apiService.mediaSaveMedia(MultipartBody.Part.createFormData("file", file.name, file.asRequestBody()))
 
+        val media = saveMediaResponse.body()
+
+        //меняет id
+        val mediaResponse = media?.copy(id = UUID.randomUUID().toString())
+
         //проверяем на соответствие ожидаемому
         if (!saveMediaResponse.isSuccessful) {
-            throw RuntimeException(saveMediaResponse.message())
+            if (saveMediaResponse.isSuccessful) {
+                val media = saveMediaResponse.body()
+                if (media?.id != null) {
+                    Log.d("Upload", "Upload successful: ${media.id}")
+                } else {
+                    Log.e("Upload", "Server returned Media with null ID")
+                }
+            } else {
+                Log.e("Upload", "Server error: ${saveMediaResponse.errorBody()?.string()}")
+            }
         }
-        return saveMediaResponse.body()
+
+
+//по итогу картинка просто не может загрузится на сервер
+        return mediaResponse
         //ответ от сервера приходит с null, который тянется дальше и роняет приложение
     }
 }

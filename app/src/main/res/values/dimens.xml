@@ -17,4 +17,5 @@
     <dimen name="size_video_view">180dp</dimen>
     <dimen name="margin_card_post">8dp</dimen>
     <dimen name="size_icon_action_bar">40dp</dimen>
+    <dimen name="size_small_headline">18sp</dimen>
 </resources>

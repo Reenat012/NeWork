@@ -35,6 +35,10 @@ android {
         )
     }
 
+    packagingOptions {
+        exclude("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -77,6 +81,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.identity.jvm)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.firebase.messaging.ktx)

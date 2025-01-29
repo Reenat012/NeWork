@@ -34,7 +34,7 @@ class EventRepositoryImpl @Inject constructor(
     private val apiService: EventApiService,
     private val eventDao: EventDao,
     eventRemoteMediator: EventRemoteMediator
-    ) : EventRepository {
+) : EventRepository {
 
     @OptIn(ExperimentalPagingApi::class)
     @SuppressLint("NewApi")

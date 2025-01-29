@@ -10,7 +10,6 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardPost"
-        style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -37,7 +36,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="@dimen/icons_size"
             android:layout_height="@dimen/icons_size"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="56dp"
             app:icon="@drawable/free_icon_font_menu_dots_vertical_3917764"
             app:iconTint="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/tv_content"
@@ -65,30 +64,33 @@
             android:ellipsize="end"
             android:lines="1"
             android:text=""
-            app:layout_constraintBottom_toTopOf="@id/tv_published"
+            android:textStyle="bold"
+            android:textSize="@dimen/size_small_headline"
+            app:layout_constraintBottom_toTopOf="@id/date_publ"
             app:layout_constraintEnd_toStartOf="@id/iv_menu"
             app:layout_constraintStart_toEndOf="@id/iv_avatar"
             app:layout_constraintTop_toTopOf="@id/iv_avatar"
             tools:text="@tools:sample/lorem[200]" />
 
-        <TextView
-            android:id="@+id/tv_published"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-            app:layout_constraintEnd_toStartOf="@id/iv_menu"
-            app:layout_constraintStart_toEndOf="@id/iv_avatar"
-            app:layout_constraintTop_toBottomOf="@id/tv_author"
-            tools:text="@tools:sample/lorem[1]" />
+            <TextView
+                android:id="@+id/date_publ"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_likes"
+                android:layout_margin="@dimen/margin_start"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="@string/publ_posts"
+                app:layout_constraintStart_toEndOf="@id/iv_avatar"
+                app:layout_constraintTop_toBottomOf="@id/tv_author"
+                app:layout_constraintBottom_toTopOf="@id/barrier_top"/>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="iv_avatar, tv_author, tv_published, iv_menu" />
+            app:constraint_referenced_ids="iv_avatar, tv_author, date_publ, iv_menu" />
 
         <TextView
             android:id="@+id/tv_content"
@@ -96,6 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_start"
             android:text=""
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier_top"
             tools:text="@tools:sample/lorem[20]" />
@@ -137,16 +140,7 @@
             app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
             tools:layout_editor_absoluteX="140dp" />
 
-        <TextView
-            android:id="@+id/date_publ"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/size_likes"
-            android:layout_margin="@dimen/margin_start"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:text="@string/publ_posts"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
+
 
         <androidx.media3.ui.PlayerView
             android:id="@+id/videoContent"
